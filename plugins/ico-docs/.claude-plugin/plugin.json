@@ -1,0 +1,9 @@
+{
+  "name": "ico-docs",
+  "description": "Sistema para producir documentos del Instituto de Comunicación que no parezcan hechos por una máquina: marca, fidelidad de contenido y puertas de calidad que se miden.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Cabaña Studio",
+    "url": "https://humbertocabana.com"
+  }
+}

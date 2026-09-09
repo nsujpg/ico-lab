@@ -1,0 +1,161 @@
+/* ==========================================================================
+   Sistema visual ICO para documento A4 impreso.
+   Punto de partida, no plantilla cerrada: cada pieza se compone a medida.
+   Valores muestreados de PDFs reales del cliente.
+   ========================================================================== */
+
+:root {
+  --navy:        #172B8F;  /* titulares, strong, bloques macizos */
+  --ink:         #4D5872;  /* cuerpo */
+  --azul:        #1A52D8;  /* filetes, antetitulos, borde de callout */
+  --azul-claro:  #6DB8FF;  /* acentos sobre fondo oscuro */
+  --lavanda:     #EDF2FD;  /* paneles y callouts */
+  --tip:         #F1F5FE;
+  --filete:      #DFE9FB;
+  --filete-2:    #E5E9F2;
+  --apagado:     #A9B0C4;  /* pies y folios */
+  --dorado:      #F1C86A;  /* subtitulares de cierre */
+
+  --grad-plano:  #12297A;  /* SIEMPRE debajo del degradado */
+  --grad:        linear-gradient(135deg, #1982DE 0%, #1242A8 30%, #12297A 62%, #0A1636 100%);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+body {
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+  color: var(--ink);
+  background: #fff;
+}
+
+@page { size: A4; margin: 0; }
+
+.page {
+  width: 210mm;
+  height: 297mm;
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  page-break-after: always;
+  break-after: page;
+}
+.page:last-child { page-break-after: auto; break-after: auto; }
+
+/* Reticula: 18 mm laterales, 17 arriba, 19,5 abajo. Columna de 174 mm. */
+.inner { position: absolute; left: 18mm; right: 18mm; top: 17mm; bottom: 19.5mm; }
+
+/* --- paginas oscuras -------------------------------------------------- */
+/* El color plano va SIEMPRE debajo: sin el, los visores de Android que no
+   pintan patrones de sombreado dejan la pagina en blanco. */
+.oscura {
+  background-color: var(--grad-plano);
+  background-image: var(--grad);
+}
+
+/* --- marca ------------------------------------------------------------ */
+/* Solo en portada y cierre. Cero sellos pequenos en paginas interiores. */
+.marca { position: absolute; top: 24mm; left: 20mm; display: flex; align-items: center; gap: 7mm; }
+.marca img { width: 20mm; height: 20mm; display: block; }
+.marca span {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700; font-size: 16pt; line-height: 1.2;
+  color: #fff; letter-spacing: .2px;
+}
+.marca-filete {
+  position: absolute; left: 20mm; right: 20mm; top: 58mm;
+  height: 1px; background: rgba(255, 255, 255, .3);
+}
+
+/* --- tipografia ------------------------------------------------------- */
+h1.portada {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700; font-size: 54pt; line-height: 1.05;
+  color: #fff; letter-spacing: -.9px;
+}
+/* Patron firmado: ultima palabra en italica y azul */
+h1.portada i, h2 i { font-style: italic; color: var(--azul-claro); }
+
+.antetitulo { display: flex; align-items: center; gap: 3.6mm; }
+.antetitulo .barra { width: 9mm; height: 2.6px; background: var(--azul); flex: 0 0 auto; }
+.antetitulo .etiqueta {
+  font-size: 8.6pt; font-weight: 600; letter-spacing: 2.4px;
+  color: var(--azul); text-transform: uppercase;
+}
+.antetitulo .linea { flex: 1; height: 1.4px; background: var(--navy); opacity: .22; }
+
+h2.seccion {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700; font-size: 19pt; line-height: 1.14;
+  color: var(--navy); letter-spacing: -.2px; margin-top: 1.6mm;
+}
+h2.seccion i { color: var(--azul); }
+
+.cuerpo {
+  font-size: 11.5pt;      /* minimo del sistema */
+  line-height: 1.54;
+  font-weight: 300;
+  color: var(--ink);
+  margin-top: 2.5mm;
+}
+.cuerpo strong { font-weight: 600; color: var(--navy); }
+.cuerpo em { font-style: italic; }
+
+/* --- apertura macizo -------------------------------------------------- */
+.apertura {
+  background: var(--navy);
+  border-radius: 6px;
+  padding: 4.6mm 8mm 4.4mm;
+}
+.apertura p { font-size: 11.5pt; line-height: 1.54; color: #D8E2F7; font-weight: 300; }
+.apertura p + p { margin-top: 2.8mm; }
+.apertura strong { font-weight: 600; color: var(--azul-claro); }
+
+/* --- callout / tip ---------------------------------------------------- */
+.callout {
+  background: var(--lavanda);
+  border-left: 3px solid var(--azul);
+  border-radius: 0 6px 6px 0;
+  padding: 3.1mm 6.5mm 3.3mm 6mm;
+  margin-top: 2.7mm;
+}
+.callout .etiqueta {
+  font-size: 8.6pt; font-weight: 600; letter-spacing: 2.2px;
+  color: var(--azul); text-transform: uppercase; margin-right: 3.4mm;
+}
+.callout p { font-size: 11pt; line-height: 1.5; color: var(--ink); font-weight: 300; }
+
+/* --- figura ----------------------------------------------------------- */
+.figura { border: 1px solid var(--filete); border-radius: 7px; overflow: hidden; margin-top: 5mm; }
+.figura .titulo { background: var(--navy); padding: 3.2mm 7mm; }
+.figura .titulo h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700; font-size: 13pt; color: #fff;
+}
+.figura .lienzo { padding: 5mm 6mm 4mm; }
+.figura svg { width: 100%; height: auto; display: block; }
+
+/* --- pie -------------------------------------------------------------- */
+.pie {
+  position: absolute; left: 18mm; right: 18mm; bottom: 10.5mm;
+  border-top: 1px solid var(--filete-2);
+  padding-top: 2.8mm;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 8.5pt; color: var(--apagado); letter-spacing: .3px;
+}
+.pie .centro { position: absolute; left: 0; right: 0; text-align: center; }
+
+/* --- boton ------------------------------------------------------------ */
+.boton {
+  display: inline-block; background: #fff; color: var(--navy);
+  font-weight: 600; font-size: 12.5pt;
+  padding: 5mm 14mm; border-radius: 999px;
+  letter-spacing: .2px;
+  text-decoration: none;   /* Edge subraya los <a> si no se quita */
+}
+
+/* PROHIBIDO: box-shadow, text-shadow, drop-shadow. El diseno de ICO es plano. */

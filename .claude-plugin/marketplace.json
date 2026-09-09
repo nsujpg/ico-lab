@@ -1,0 +1,15 @@
+{
+  "name": "ico",
+  "owner": {
+    "name": "Cabaña Studio",
+    "url": "https://humbertocabana.com"
+  },
+  "plugins": [
+    {
+      "name": "ico-docs",
+      "source": "./plugins/ico-docs",
+      "description": "Documentos del Instituto de Comunicación: sistema visual, regla de fidelidad de contenido y puertas de calidad medidas. Incluye /ico-docs:ico-pdf",
+      "version": "1.0.0"
+    }
+  ]
+}
