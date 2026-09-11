@@ -89,9 +89,9 @@ FASES = [
 ]
 
 PROBLEMAS = [
-    ("El <em>marketplace add</em> no clona",
-     "El repositorio es privado. Pide que te añadan como colaborador y haz "
-     "<strong>gh auth login</strong> en tu máquina."),
+    ("La skill no aparece después de instalarla",
+     "Hay que reiniciar la sesión de Claude Code. Compruébalo con "
+     "<strong>/plugin list</strong>."),
     ("Los titulares salen con otra tipografía",
      "Faltan Poppins o Playfair Display en el sistema. Se bajan de Google Fonts y se "
      "instalan como cualquier otra fuente."),
@@ -376,18 +376,17 @@ problemas_html = "".join(
     for t, d in PROBLEMAS)
 p3 = pagina(
     seccion("EMPEZAR", "Instalación en cinco minutos", "minutos")
-    + '<p class="cuerpo">El repositorio es privado: pide que te añadan como colaborador '
-      'antes de empezar.</p>'
+    + '<p class="cuerpo">El repositorio es público: no hace falta pedir acceso a nadie. '
+      'Se instala una vez por persona y se actualiza solo.</p>'
     + '<div style="margin-top:5mm">' + antetitulo("1 · REQUISITOS") + '</div>'
     + '<p class="cuerpo">Python con dos librerías y las dos fuentes de la marca instaladas '
       'en el sistema: <strong>Poppins</strong> y <strong>Playfair Display</strong>, que se '
       'bajan de Google Fonts. Así el CSS no depende de la red al imprimir.</p>'
     + cod("pip install pymupdf pillow")
-    + '<div style="margin-top:5mm">' + antetitulo("2 · ACCESO Y SKILL") + '</div>'
-    + '<p class="cuerpo">Lo primero en la terminal, lo segundo dentro de Claude Code. '
-      'Después, reinicia la sesión.</p>'
-    + cod("gh auth login\n\n/plugin marketplace add nsujpg/ico-lab\n"
-          "/plugin install ico-docs@ico")
+    + '<div style="margin-top:5mm">' + antetitulo("2 · INSTALAR LA SKILL") + '</div>'
+    + '<p class="cuerpo">Dos comandos dentro de Claude Code. Después, reinicia la '
+      'sesión.</p>'
+    + cod("/plugin marketplace add nsujpg/ico-lab\n/plugin install ico-docs@ico")
     + '<p class="cuerpo">Se activa sola al pedir cualquier PDF de ICO, o a mano con '
       '<strong>/ico-docs:ico-pdf</strong>. Para actualizarla: '
       '<strong>/plugin marketplace update ico</strong>.</p>'

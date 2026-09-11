@@ -4,7 +4,8 @@ Marketplace de Claude Code con las herramientas de trabajo del **Instituto de Co
 
 ## Instalar
 
-Dos comandos dentro de Claude Code, una sola vez:
+Dos comandos dentro de Claude Code, una sola vez. El repositorio es público,
+así que no hace falta pedir acceso a nadie:
 
 ```
 /plugin marketplace add humberto-ui/ico-lab
