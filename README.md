@@ -77,9 +77,12 @@ Google Fonts. Detalle en `references/toolchain.md`.
 
 ## La guía para el equipo
 
-`docs/Sistema de documentos ICO - guia de uso.pdf` — 11 páginas con la instalación, el
-sistema visual con las muestras, lo que delata a una máquina y las puertas de calidad.
-Está hecha con la propia skill y pasa sus propias comprobaciones. Se regenera con
+`docs/Como hacer un documento de ICO.pdf` — 14 páginas, escrita para gente **no técnica**:
+seis pasos con los enlaces de descarga, dónde hacer clic y qué escribirle a Claude
+literalmente. Nadie tiene que abrir una terminal ni saber qué es pip; lo que haga falta
+instalar se lo pide a Claude.
+
+Está maquetada con la propia skill y pasa sus propias comprobaciones. Se regenera con
 `python docs/build_guia_equipo.py`.
 
 ## Sin Claude Code

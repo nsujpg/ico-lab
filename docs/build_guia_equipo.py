@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-Genera la guía de uso del sistema de documentos de ICO para el equipo.
+Genera la guía de uso del sistema de documentos de ICO.
 
-Se construye con el propio sistema que documenta: misma paleta, misma
-tipografía, misma retícula, mismo isotipo. Si el PDF resultante no pasa las
-puertas de calidad de la skill, es que el sistema no vale.
+Va dirigida a personas NO tecnicas: cada paso dice donde entrar, que descargar
+y que escribir, literalmente. Nadie tiene que saber que es pip ni abrir una
+terminal; lo que haga falta instalar se lo pide a Claude.
+
+Se construye con el propio sistema que documenta. Si el PDF no pasa las puertas
+de calidad de la skill, es que el sistema no vale.
 
     python build_guia_equipo.py
 """
@@ -14,152 +17,93 @@ import os
 AQUI = os.path.dirname(os.path.abspath(__file__))
 SALIDA = os.path.join(AQUI, "guia-equipo.html")
 
-# ------------------------------------------------------------------ paleta
 NAVY, INK, AZUL, SKY = "#172B8F", "#4D5872", "#1A52D8", "#6DB8FF"
 LAV, TIP, FILETE, FILETE2 = "#EDF2FD", "#F1F5FE", "#DFE9FB", "#E5E9F2"
 APAGADO, DORADO, GRAD_PLANO = "#A9B0C4", "#F1C86A", "#12297A"
 GRAD = "linear-gradient(135deg,#1982DE 0%,#1242A8 30%,#12297A 62%,#0A1636 100%)"
 
+MAC = "https://claude.ai/api/desktop/darwin/universal/dmg/latest/redirect"
+WIN = "https://claude.ai/api/desktop/win32/x64/setup/latest/redirect"
+GIT = "https://git-scm.com/downloads/win"
+PLANES = "https://claude.com/pricing"
+POPPINS = "https://fonts.google.com/specimen/Poppins"
+PLAYFAIR = "https://fonts.google.com/specimen/Playfair+Display"
+REPO = "https://github.com/nsujpg/ico-lab"
+
 PALETA = [
-    ("#172B8F", "Navy", "Titulares, strong, bloques macizos"),
+    ("#172B8F", "Navy", "Titulares y bloques macizos"),
     ("#4D5872", "Tinta", "Cuerpo de texto"),
-    ("#1A52D8", "Azul de acción", "Filetes, antetítulos, borde de callout"),
+    ("#1A52D8", "Azul de acción", "Filetes, antetítulos y callouts"),
     ("#6DB8FF", "Azul claro", "Acentos sobre fondo oscuro"),
-    ("#0068FF", "Azul del isotipo", "Solo la marca"),
-    ("#EDF2FD", "Lavanda", "Paneles y callouts"),
-    ("#F1F5FE", "Lavanda claro", "Caja de tip"),
-    ("#DFE9FB", "Filete", "Bordes de figura y retícula"),
-    ("#A9B0C4", "Apagado", "Pies y folios"),
+    ("#EDF2FD", "Lavanda", "Paneles y cajas de tip"),
     ("#F1C86A", "Dorado", "Subtitulares de cierre"),
-]
-
-SERIES = ["#6DB8FF", "#37B0A6", "#3F6BD6", "#F2B134"]
-
-ESCALA = [
-    ("Titular de portada", "54 pt", "playfair", 54, "Guía de productividad"),
-    ("Titular de sección", "19 pt", "playfair", 19, "Ponle un límite a todo"),
-    ("Cuerpo", "11,5 pt", "poppins300", 11.5,
-     "Todos tenemos las mismas 24 horas. La diferencia no está en quién trabaja más."),
-    ("Texto de callout", "11 pt", "poppins300", 11,
-     "Elige una sola habilidad y dedícale 20 minutos cada día."),
-    ("Antetítulo", "8,6 pt", "eyebrow", 8.6, "PASO 1"),
-    ("Pie y folio", "8,5 pt", "poppins400", 8.5, "Instituto de Comunicación"),
 ]
 
 REGLAS = [
     ("El contenido es del cliente",
-     "Adaptar no es reinterpretar. Ni una palabra propia, ni resúmenes, ni cajas de "
-     "consejos, ni reordenar apartados. Las erratas se reproducen tal cual y se avisan "
-     "aparte, nunca se corrigen por dentro."),
+     "Si estás adaptando algo que ICO ya ha escrito, el texto va íntegro. Ni una palabra "
+     "propia, ni resúmenes, ni cajas de consejos, ni reordenar apartados. Si ves una "
+     "errata, no la corrijas: avísala aparte."),
     ("La marca se lee o no está",
-     "Isotipo de 20 mm con el nombre al lado, en portada y cierre. Cero sellos pequeños "
-     "en las esquinas de las páginas interiores: un logo que no se lee es ruido."),
+     "El isotipo va a 20 mm con el nombre al lado, en portada y cierre. Nada de sellos "
+     "pequeños en las esquinas de las páginas interiores: un logo que no se lee es ruido."),
     ("Cero sombras",
-     "Ni en texto ni en elementos. El diseño de ICO es plano. Para legibilidad sobre foto "
-     "se usa un scrim de fondo, que es tratamiento de imagen, no una sombra."),
+     "El diseño de ICO es plano. Ni sombras en el texto ni en las cajas."),
     ("Nada por debajo de 11,5 pt",
-     "En texto de lectura. Los rótulos de una figura y los folios son la única excepción, "
-     "y tienen su propio suelo."),
-]
-
-FASES = [
-    ("Leer la fuente de verdad",
-     "Del PDF o del .ai del cliente se saca todo: el texto íntegro, las páginas en imagen, "
-     "los assets con la transparencia resuelta y la paleta real muestreada de los vectores. "
-     "Nunca se maqueta de memoria ni a ojo.",
-     "python &lt;skill&gt;/qa/extraer_fuente.py &quot;original.pdf&quot; --salida ./fuente"),
-    ("Decidir el sistema antes de maquetar",
-     "Mira las páginas del original y las piezas anteriores. Decide retícula, jerarquía y "
-     "ritmo, y escríbelo antes de tocar CSS. Pregunta de control: ¿esta pieza tiene un "
-     "sistema, o son ocho bloques iguales repetidos?",
-     None),
-    ("Construir",
-     "HTML y CSS impresos a PDF con un Chromium en modo headless. Los tokens del sistema "
-     "están en plantilla/ico.css.",
-     "&lt;chromium&gt; --headless=new --disable-gpu --no-pdf-header-footer \\\n"
-     "  --print-to-pdf=&quot;salida.pdf&quot; &quot;file:///ruta/documento.html&quot;"),
-    ("Pasar las puertas de calidad",
-     "Se miden, no se estiman. Las dos son obligatorias antes de enseñar nada a nadie.",
-     "python &lt;skill&gt;/qa/qa_maquetacion.py &quot;salida.pdf&quot; --html documento.html\n"
-     "python &lt;skill&gt;/qa/qa_fidelidad.py &quot;original.pdf&quot; &quot;salida.pdf&quot;"),
-    ("Mirar las páginas",
-     "Un script que pasa no garantiza una página bien compuesta. Los huecos muertos, los "
-     "bloques desequilibrados y las líneas huérfanas solo se ven mirando.",
-     "python &lt;skill&gt;/qa/render_paginas.py &quot;salida.pdf&quot; --salida ./revision"),
-]
-
-PROBLEMAS = [
-    ("La skill no aparece después de instalarla",
-     "Hay que reiniciar la sesión de Claude Code. Compruébalo con "
-     "<strong>/plugin list</strong>."),
-    ("Los titulares salen con otra tipografía",
-     "Faltan Poppins o Playfair Display en el sistema. Se bajan de Google Fonts y se "
-     "instalan como cualquier otra fuente."),
-    ("El PDF no se actualiza al reimprimir",
-     "Chromium a veces termina sin escribir y sin avisar. Comprueba la fecha del archivo "
-     "después de imprimir, no des por hecho que se ha escrito."),
-    ("Las páginas oscuras salen en blanco en el móvil",
-     "Es un degradado sin color plano debajo. Parte el atajo de CSS en "
-     "<strong>background-color</strong> más <strong>background-image</strong>."),
+     "En todo el texto que se lee. Solo los rótulos de una gráfica y los números de página "
+     "pueden ir más pequeños."),
 ]
 
 ANTI_IA = [
-    ("El mismo bloque repetido N veces",
-     "Ocho pasos con ocho pastillas idénticas no es un sistema, es un formulario.",
-     "Antetítulo más titular grande en Playfair y filete. El color estructura, no rellena."),
+    ("El mismo bloque repetido una y otra vez",
+     "Ocho apartados con ocho cajas idénticas no es un diseño, es un formulario."),
     ("Huecos muertos",
-     "Media página en blanco al final porque el contenido se acabó. Es la firma más clara "
-     "de maquetación automática.",
-     "Reparte el aire, agranda la figura o recompón la paginación. Un margen inferior de "
-     "20 a 25 mm es normal; 40 mm es un agujero."),
+     "Media página en blanco al final porque el texto se acabó. Es lo que más canta."),
     ("Todo centrado",
-     "Portada centrada, título centrado, subtítulo centrado. Seguro y anodino.",
-     "Composición asimétrica, anclada abajo, con la foto a sangre."),
+     "Portada centrada, título centrado, subtítulo centrado. Seguro y anodino."),
     ("La marca repetida en miniatura",
-     "Un isotipo de 7 mm en la esquina de cada página no comunica marca.",
-     "Marca grande en portada y cierre; en interiores, el nombre en el pie y nada más."),
+     "Un logo de 7 mm en la esquina de cada página no comunica marca."),
     ("Decoración por defecto",
-     "Emojis, iconos genéricos, cajas con borde alrededor de todo, subrayados de color.",
-     "Un punto focal por página. Si resaltas todo, no resaltas nada: dos o tres énfasis en "
-     "todo el documento."),
-    ("Gráficas ilegibles",
-     "Curvas sin leyenda, etiquetas flotando lejos de lo que nombran, texto girado sobre "
-     "fondo de bajo contraste.",
-     "Cada etiqueta pegada a su curva con un punto y una guía."),
+     "Emojis, iconos genéricos y cajas con borde alrededor de todo."),
+    ("Gráficas que no se entienden",
+     "Etiquetas flotando lejos de la línea que nombran, o texto girado sobre fondo oscuro."),
 ]
 
 OLOR = [
-    "¿Hay algún bloque que aparece idéntico más de tres veces seguidas?",
-    "¿Alguna página tiene más de 30 mm de blanco seguido que no sea margen?",
-    "¿Se lee la marca sin acercarse?",
-    "¿Cada gráfica se entiende sin leer el cuerpo del texto?",
-    "¿Hay algún elemento que esté ahí solo porque quedaba hueco?",
+    "¿Hay algún bloque idéntico repetido más de tres veces seguidas?",
+    "¿Alguna página tiene más de un tercio en blanco?",
+    "¿Se lee la marca sin acercar la nariz a la pantalla?",
+    "¿Se entiende cada gráfica sin leer el texto de alrededor?",
+    "¿Hay algo puesto solo porque quedaba hueco?",
 ]
 
-PUERTAS = [
-    ("qa_maquetacion.py", "Holgura al pie, cuerpos de texto, degradados y sombras", [
-        "Mide en milímetros lo que hay entre el último píxel de contenido y el filete del "
-        "pie. Por debajo de 3,5 mm es desborde. Caza páginas que a ojo parecen correctas.",
-        "Lista los cuerpos reales y separa el texto de lectura del rótulo por volumen, "
-        "media de caracteres y tipografía, para no llenar el informe de falsos avisos.",
-        "Avisa de los degradados sin color plano debajo, que en muchos visores de Android "
-        "dejan la página en blanco.",
-        "Cuenta las sombras del HTML. Tienen que ser cero.",
-    ]),
-    ("qa_fidelidad.py", "Demuestra que el texto del cliente no ha cambiado", [
-        "Compara la secuencia de palabras de los dos PDFs. A nivel de frase da falsos "
-        "positivos por los saltos de línea; a nivel de palabra es fiable.",
-        "Recompone las palabras que el letter-spacing parte en letras y clasifica como "
-        "artefacto lo que tiene las mismas letras en otro troceado o las mismas palabras "
-        "en otro orden.",
-        "Lo que queda hay que confirmarlo mirando. Una vez comprobado se silencia con "
-        "--ignorar, nunca antes.",
-    ]),
+PROBLEMAS = [
+    ("La pestaña Code me pide pasar a un plan de pago",
+     "Claude Code no entra en el plan gratuito. Necesitas Pro, Max, Team o Enterprise."),
+    ("Escribo /plugin y no aparece nada",
+     "Estás en la pestaña Chat. Los comandos de barra solo funcionan en <strong>Code</strong>."),
+    ("Instalé el sistema y Claude sigue sin conocerlo",
+     "Cierra Claude y vuelve a abrirlo. Compruébalo escribiendo <strong>/plugin list</strong>."),
+    ("Los titulares salen con una tipografía rara",
+     "Faltan Poppins o Playfair Display. Vuelve al paso 3 e instálalas."),
+    ("Claude dice que le falta un programa o una librería",
+     "Pídele que lo instale él: <em>«instala lo que te falte y vuelve a intentarlo»</em>."),
+    ("En Windows no me deja elegir carpeta",
+     "Falta Git. Instálalo desde git-scm.com/downloads/win y reinicia Claude."),
 ]
 
 
 def cod(txt):
     return '<pre class="cod">%s</pre>' % txt
+
+
+def enlace(url, texto=None):
+    return '<a class="link" href="%s">%s</a>' % (url, texto or url)
+
+
+def decir(texto):
+    return ('<div class="decir"><span class="et">Escríbele esto</span><p>%s</p></div>'
+            % texto)
 
 
 def pagina(inner, folio):
@@ -174,10 +118,23 @@ def antetitulo(txt):
             '<span class="etiqueta">%s</span><span class="linea"></span></div>' % txt)
 
 
-def seccion(eyebrow, titulo, ultima=None):
-    if ultima:
-        titulo = titulo.replace(ultima, "<i>%s</i>" % ultima)
-    return antetitulo(eyebrow) + '<h2 class="seccion">%s</h2>' % titulo
+def paso(n, titulo, intro, bloques):
+    h = ('<div class="cab-paso"><div class="np">%d</div>'
+         '<div><div class="et-paso">PASO %d</div>'
+         '<h2 class="tp">%s</h2></div></div>' % (n, n, titulo))
+    if intro:
+        h += '<p class="cuerpo">%s</p>' % intro
+    return h + "".join(bloques)
+
+
+def listo(texto):
+    return ('<div class="listo"><span class="et">Sabrás que ha ido bien cuando</span>'
+            '<p>%s</p></div>' % texto)
+
+
+def sub(texto, extra=""):
+    return ('<div class="sub"><div class="punto"></div><div><p>%s</p>%s</div></div>'
+            % (texto, extra))
 
 
 CSS = """
@@ -191,7 +148,6 @@ body{font-family:'Poppins','Segoe UI',sans-serif;color:__INK__;background:#fff}
 .inner{position:absolute;left:18mm;right:18mm;top:17mm;bottom:19.5mm}
 
 .oscura{background-color:__GRADPLANO__;background-image:__GRAD__}
-
 .marca{position:absolute;top:24mm;left:20mm;display:flex;align-items:center;gap:7mm}
 .marca img{width:20mm;height:20mm;display:block}
 .marca span{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:16pt;
@@ -199,12 +155,12 @@ body{font-family:'Poppins','Segoe UI',sans-serif;color:__INK__;background:#fff}
 .marca-filete{position:absolute;left:20mm;right:20mm;top:58mm;height:1px;
   background:rgba(255,255,255,.3)}
 
-h1.portada{position:absolute;left:20mm;right:22mm;top:82mm;
-  font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:46pt;
-  line-height:1.07;color:#fff;letter-spacing:-.7px}
+h1.portada{position:absolute;left:20mm;right:26mm;top:84mm;
+  font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:42pt;
+  line-height:1.08;color:#fff;letter-spacing:-.6px}
 h1.portada i{font-style:italic;color:__SKY__}
-.portada-rule{position:absolute;left:20mm;top:186mm;width:36mm;height:2.5px;background:__SKY__}
-.portada-sub{position:absolute;left:20mm;right:44mm;top:195mm;font-size:13pt;
+.portada-rule{position:absolute;left:20mm;top:196mm;width:36mm;height:2.5px;background:__SKY__}
+.portada-sub{position:absolute;left:20mm;right:40mm;top:205mm;font-size:13pt;
   line-height:1.55;color:#CFE0FF;font-weight:300}
 .portada-meta{position:absolute;left:20mm;right:20mm;bottom:22mm;
   border-top:1px solid rgba(255,255,255,.22);padding-top:6mm;
@@ -220,101 +176,78 @@ h2.seccion{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-siz
   line-height:1.14;color:__NAVY__;letter-spacing:-.2px;margin-top:1.8mm}
 h2.seccion i{font-style:italic;color:__AZUL__}
 
-.cuerpo{font-size:11.5pt;line-height:1.6;font-weight:300;color:__INK__;margin-top:3.4mm}
+.cab-paso{display:flex;gap:6mm;align-items:center}
+.cab-paso .np{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:40pt;
+  color:__AZUL__;line-height:.9;flex:0 0 18mm}
+.cab-paso .et-paso{font-size:8.6pt;font-weight:600;letter-spacing:2.4px;color:__AZUL__}
+.cab-paso .tp{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:21pt;
+  line-height:1.14;color:__NAVY__;margin-top:1.4mm}
+
+.cuerpo{font-size:12.5pt;line-height:1.65;font-weight:300;color:__INK__;margin-top:5.5mm}
 .cuerpo strong{font-weight:600;color:__NAVY__}
 .cuerpo em{font-style:italic}
+.link{color:__AZUL__;font-weight:500;text-decoration:none;word-break:break-all}
 
-.apertura{background:__NAVY__;border-radius:6px;padding:8.5mm 9mm 8mm}
-.apertura p{font-size:11.5pt;line-height:1.6;color:#D8E2F7;font-weight:300}
+.sub{display:flex;gap:5mm;margin-top:9mm}
+.sub .punto{flex:0 0 3.4mm;height:3.4mm;border-radius:50%;background:__AZUL__;margin-top:2.6mm}
+.sub p{font-size:12.5pt;line-height:1.65;font-weight:300;color:__INK__}
+.sub p strong{font-weight:600;color:__NAVY__}
+.sub p em{font-style:italic}
+
+.apertura{background:__NAVY__;border-radius:6px;padding:8mm 9mm 7.6mm}
+.apertura p{font-size:12.5pt;line-height:1.65;color:#D8E2F7;font-weight:300}
 .apertura p+p{margin-top:3.4mm}
 .apertura strong{font-weight:600;color:__SKY__}
 
-.cod{font-family:Consolas,'Courier New',monospace;font-size:9.8pt;line-height:1.55;
+.cod{font-family:Consolas,'Courier New',monospace;font-size:11.5pt;line-height:1.75;
   background:__TIP__;border-left:3px solid __AZUL__;border-radius:0 5px 5px 0;
-  padding:3.4mm 5mm;margin-top:3.6mm;color:__NAVY__;white-space:pre-wrap;
+  padding:4.4mm 5.5mm;margin-top:4.2mm;color:__NAVY__;white-space:pre-wrap;
   word-break:break-word}
+.decir{background:__LAV__;border-left:3px solid __AZUL__;border-radius:0 6px 6px 0;
+  padding:5mm 6.5mm 5.2mm;margin-top:4.2mm}
+.decir .et{font-size:8.6pt;font-weight:600;letter-spacing:2.2px;color:__AZUL__;
+  text-transform:uppercase;display:block;margin-bottom:2.2mm}
+.decir p{font-size:12.5pt;line-height:1.65;font-weight:300;color:__NAVY__;font-style:italic}
 
-.regla{display:flex;gap:5mm;margin-top:12mm}
-.regla .num{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:23pt;
-  color:__AZUL__;line-height:1;flex:0 0 12mm}
-.regla h3{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:14.5pt;
-  color:__NAVY__;line-height:1.2}
-.regla p{font-size:11pt;line-height:1.58;font-weight:300;color:__INK__;margin-top:2mm}
+.listo{border:1.6px solid __AZUL__;border-radius:6px;padding:5mm 6.5mm 5.4mm;
+  margin-top:9mm}
+.listo .et{font-size:8.6pt;font-weight:600;letter-spacing:2.2px;color:__AZUL__;
+  text-transform:uppercase;display:block;margin-bottom:2.4mm}
+.listo p{font-size:12.5pt;line-height:1.65;font-weight:300;color:__NAVY__}
+.listo p strong{font-weight:600}
 
-.fase{margin-top:7mm}
-.fase h3{font-size:12pt;font-weight:600;color:__NAVY__}
-.fase h3 .n{color:__AZUL__;margin-right:2.5mm}
-.fase p{font-size:11pt;line-height:1.58;font-weight:300;color:__INK__;margin-top:1.8mm}
+.checklist{margin-top:4mm}
+.checklist li{list-style:none;font-size:12.5pt;line-height:1.65;font-weight:300;
+  color:__INK__;padding-left:8.5mm;position:relative;margin-top:7.5mm}
+.checklist li:before{content:"";position:absolute;left:0;top:1.8mm;width:4mm;height:4mm;
+  border:1.6px solid __AZUL__;border-radius:2px}
+.checklist li strong{font-weight:600;color:__NAVY__}
 
-table.paleta{width:100%;border-collapse:collapse;margin-top:5mm}
-table.paleta td{padding:2.2mm 0;border-bottom:1px solid __FILETE__;vertical-align:middle}
+table.paleta{width:100%;border-collapse:collapse;margin-top:4mm}
+table.paleta td{padding:4.2mm 0;border-bottom:1px solid __FILETE__;vertical-align:middle}
 table.paleta .chip{width:18mm}
 table.paleta .chip div{width:16mm;height:9mm;border-radius:3px;
   border:1px solid rgba(0,0,0,.07)}
 table.paleta .hex{font-family:Consolas,monospace;font-size:10.2pt;color:__NAVY__;
   width:27mm;font-weight:600}
-table.paleta .nom{font-size:11pt;font-weight:500;color:__NAVY__;width:43mm}
-table.paleta .uso{font-size:10.6pt;font-weight:300;color:__INK__}
+table.paleta .nom{font-size:12pt;font-weight:500;color:__NAVY__;width:43mm}
+table.paleta .uso{font-size:11.5pt;font-weight:300;color:__INK__}
 
-.series{display:flex;gap:4mm;margin-top:4mm}
-.series div{flex:1;text-align:center}
-.series .barra{height:8mm;border-radius:3px}
-.series .et{font-family:Consolas,monospace;font-size:9.2pt;color:__INK__;margin-top:1.8mm}
-
-.tipo{border-bottom:1px solid __FILETE__;padding:4mm 0}
-.tipo .meta{display:flex;gap:4mm;align-items:baseline}
+.tipo{border-bottom:1px solid __FILETE__;padding:6mm 0}
 .tipo .rol{font-size:8.6pt;font-weight:600;letter-spacing:1.6px;color:__AZUL__;
-  text-transform:uppercase;flex:0 0 46mm}
-.tipo .pt{font-family:Consolas,monospace;font-size:9.8pt;color:__NAVY__;font-weight:600}
-.tipo .muestra{margin-top:2.2mm;color:__NAVY__}
+  text-transform:uppercase}
+.tipo .muestra{margin-top:2.4mm;color:__NAVY__}
 .playfair{font-family:'Playfair Display',Georgia,serif;font-weight:700;line-height:1.1}
 .poppins300{font-weight:300;color:__INK__;line-height:1.5}
-.poppins400{font-weight:400;color:__APAGADO__}
-.eyebrow{font-weight:600;letter-spacing:2.4px;color:__AZUL__;text-transform:uppercase}
 
-.reticula{margin-top:5mm;display:flex;gap:9mm;align-items:flex-start}
-.reticula .dib{flex:0 0 56mm;height:79mm;border:1px solid __NAVY__;position:relative;
-  background:#fff}
-.reticula .zona{position:absolute;left:4.8mm;right:4.8mm;top:4.5mm;bottom:5.2mm;
-  background:__LAV__;border:1px dashed __AZUL__}
-.reticula .piecito{position:absolute;left:4.8mm;right:4.8mm;bottom:2.8mm;height:1px;
-  background:__APAGADO__}
-.reticula ul{list-style:none;font-size:11pt;line-height:1.95;font-weight:300;color:__INK__}
-.reticula li strong{font-weight:600;color:__NAVY__;font-family:Consolas,monospace;
-  font-size:10.2pt}
+.mal{margin-top:12mm;border-left:3px solid __FILETE__;padding-left:5.5mm}
+.mal h3{font-size:14pt;font-weight:600;color:__NAVY__}
+.mal .que{font-size:12.5pt;line-height:1.65;font-weight:300;color:__INK__;margin-top:1.6mm}
 
-.comp{border:1px solid __FILETE__;border-radius:7px;margin-top:4mm;overflow:hidden}
-.comp .cab{background:__NAVY__;padding:2.8mm 6mm}
-.comp .cab h4{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:12pt;
-  color:#fff}
-.comp .interior{padding:4.4mm 6mm 5mm}
-.comp .interior p{font-size:11pt;font-weight:300;line-height:1.55;color:__INK__}
-.callout{background:__LAV__;border-left:3px solid __AZUL__;border-radius:0 6px 6px 0;
-  padding:3.6mm 6.5mm 3.8mm 6mm}
-.callout .et{font-size:8.6pt;font-weight:600;letter-spacing:2.2px;color:__AZUL__;
-  text-transform:uppercase;margin-right:3.4mm}
-.callout p{font-size:11pt;line-height:1.55;font-weight:300;color:__INK__;display:inline}
-
-.mal{margin-top:4.4mm;border-left:3px solid __FILETE__;padding-left:5.5mm}
-.mal h3{font-size:12pt;font-weight:600;color:__NAVY__}
-.mal .que{font-size:11pt;line-height:1.55;font-weight:300;color:__INK__;margin-top:1.6mm}
-.mal .en-vez{font-size:11pt;line-height:1.55;font-weight:300;color:__NAVY__;margin-top:1.6mm}
-.mal .en-vez b{font-weight:600;color:__AZUL__}
-
-.puerta{margin-top:18mm}
-.puerta h3{font-family:Consolas,monospace;font-size:12.5pt;font-weight:700;color:__NAVY__}
-.puerta .sub{font-size:11pt;font-weight:300;color:__INK__;margin-top:2.4mm;
-  padding-bottom:4.5mm;border-bottom:1px solid __FILETE__}
-.puerta ul{list-style:none;margin-top:5mm}
-.puerta li{font-size:11pt;line-height:1.58;font-weight:300;color:__INK__;
-  padding-left:6.5mm;position:relative;margin-top:5.4mm}
-.puerta li:before{content:"";position:absolute;left:0;top:2.4mm;width:2.6mm;height:2.6mm;
-  border-radius:50%;background:__AZUL__}
-
-.olor{counter-reset:o;margin-top:8mm}
-.olor li{list-style:none;font-size:11pt;line-height:1.55;font-weight:300;color:__INK__;
-  padding-left:9mm;position:relative;margin-top:10mm}
-.olor li:before{counter-increment:o;content:counter(o);position:absolute;left:0;top:-.4mm;
+.olor{counter-reset:o;margin-top:7mm}
+.olor li{list-style:none;font-size:13pt;line-height:1.65;font-weight:300;color:__INK__;
+  padding-left:10.5mm;position:relative;margin-top:11.5mm}
+.olor li:before{counter-increment:o;content:counter(o);position:absolute;left:0;top:-.6mm;
   font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:13pt;color:__AZUL__}
 
 .pie{position:absolute;left:18mm;right:18mm;bottom:10.5mm;border-top:1px solid __FILETE2__;
@@ -330,9 +263,7 @@ table.paleta .uso{font-size:10.6pt;font-weight:300;color:__INK__}
   color:__DORADO__;margin-top:11mm}
 .cierre p{font-size:11.5pt;line-height:1.62;color:#D5E4FA;font-weight:300;margin-top:4.4mm}
 .cierre p strong{font-weight:600;color:#fff}
-.cierre .codc{font-family:Consolas,monospace;font-size:10.6pt;line-height:1.62;
-  color:#fff;background:rgba(255,255,255,.10);border-left:3px solid __SKY__;
-  border-radius:0 5px 5px 0;padding:3.8mm 5mm;margin-top:6mm;white-space:pre-wrap}
+.cierre .link{color:__SKY__}
 .cierre .url{margin-top:auto;font-size:9.5pt;letter-spacing:.6px;color:#9EC2F0}
 """
 for k, v in [("__NAVY__", NAVY), ("__INK__", INK), ("__AZUL__", AZUL), ("__SKY__", SKY),
@@ -341,192 +272,234 @@ for k, v in [("__NAVY__", NAVY), ("__INK__", INK), ("__AZUL__", AZUL), ("__SKY__
              ("__GRADPLANO__", GRAD_PLANO), ("__GRAD__", GRAD)]:
     CSS = CSS.replace(k, v)
 
-# El isotipo es el archivo real extraido de un PDF del cliente, no una reconstruccion.
 MARCA = ('<div class="marca"><img src="assets/iso_white.png" alt="">'
          '<span>Instituto de<br>Comunicación</span></div>'
          '<div class="marca-filete"></div>')
 
-# ------------------------------------------------------------------ páginas
+# ------------------------------------------------------------------- páginas
 p1 = """<div class="page oscura">
   %s
-  <h1 class="portada">Sistema de documentos<br>del Instituto de <i>Comunicación</i></h1>
+  <h1 class="portada">Cómo hacer un documento del Instituto de <i>Comunicación</i></h1>
   <div class="portada-rule"></div>
-  <p class="portada-sub">Cómo producir los PDFs del cliente sin repetir las rondas que ya
-     costaron rechazos. Guía de uso para el equipo.</p>
+  <p class="portada-sub">Seis pasos, de principio a fin. No hace falta saber programar ni
+     escribir una sola línea de código.</p>
   <div class="portada-meta"><span>Cabaña Studio</span><span>skill ico-pdf · v1.0</span></div>
 </div>""" % MARCA
 
-reglas_html = "".join(
-    '<div class="regla"><div class="num">%02d</div><div><h3>%s</h3><p>%s</p></div></div>'
-    % (i + 1, t, d) for i, (t, d) in enumerate(REGLAS))
 p2 = pagina(
     '<div class="apertura">'
-    '<p>Esto no es un manual de estilo decorativo. Es lo que hemos aprendido produciendo '
-    'documentos para ICO, incluidas las veces que el cliente los devolvió: logos que no se '
-    'leían, huecos muertos a media página, cuerpos de texto pequeños y ocho bloques '
-    'idénticos repetidos.</p>'
-    '<p>Va instalado como skill de Claude, así que no hay que recordarlo: se activa solo al '
-    'pedir cualquier PDF de ICO. <strong>Lo que sí hay que conocer son las cuatro reglas de '
-    'abajo</strong>, porque son las que el cliente nota.</p></div>'
-    '<div style="margin-top:10mm">' + seccion("LO INNEGOCIABLE", "Cuatro reglas", "reglas")
-    + reglas_html + '</div>', 2)
+    '<p>Los documentos de ICO los va a maquetar Claude por ti. Tú le dices qué quieres, él '
+    'lo monta, lo comprueba y te lo enseña. Esta guía te lleva desde no tener nada '
+    'instalado hasta tener el primer PDF terminado.</p>'
+    '<p><strong>No necesitas saber programar.</strong> Los seis pasos son descargar un '
+    'programa, pegar dos frases y pedirle las cosas a Claude escribiendo en castellano.</p>'
+    '</div>'
+    + '<div style="margin-top:12mm">' + antetitulo("ANTES DE EMPEZAR NECESITAS") + '</div>'
+    + '<ul class="checklist">'
+      '<li><strong>Un plan de pago de Claude:</strong> Pro, Max, Team o Enterprise. '
+      'El gratuito no sirve para esto. Los planes están en ' + enlace(PLANES) + '</li>'
+      '<li><strong>Un ordenador con Windows o Mac</strong> y conexión a internet.</li>'
+      '<li><strong>Unos veinte minutos</strong> la primera vez. Después ninguno: todo esto '
+      'se instala una sola vez.</li>'
+      '</ul>'
+    + '<div style="margin-top:12mm">' + antetitulo("LOS SEIS PASOS") + '</div>'
+    + '<p class="cuerpo"><strong>1.</strong> Instalar Claude. &nbsp;<strong>2.</strong> '
+      'Instalar el sistema de ICO. &nbsp;<strong>3.</strong> Instalar las dos tipografías. '
+      '&nbsp;<strong>4.</strong> Dejar que Claude prepare el resto. &nbsp;<strong>5.</strong> '
+      'Pedirle el documento. &nbsp;<strong>6.</strong> Comprobarlo antes de darlo por bueno.</p>'
+    + '<p class="cuerpo">Los tres primeros se hacen una vez en la vida. Del cuarto en '
+      'adelante es lo que harás cada vez que necesites un documento.</p>', 2)
 
-problemas_html = "".join(
-    '<div class="mal"><h3>%s</h3><p class="que">%s</p></div>' % (t, d)
-    for t, d in PROBLEMAS)
 p3 = pagina(
-    seccion("EMPEZAR", "Instalación en cinco minutos", "minutos")
-    + '<p class="cuerpo">El repositorio es público: no hace falta pedir acceso a nadie. '
-      'Se instala una vez por persona y se actualiza solo.</p>'
-    + '<div style="margin-top:5mm">' + antetitulo("1 · REQUISITOS") + '</div>'
-    + '<p class="cuerpo">Python con dos librerías y las dos fuentes de la marca instaladas '
-      'en el sistema: <strong>Poppins</strong> y <strong>Playfair Display</strong>, que se '
-      'bajan de Google Fonts. Así el CSS no depende de la red al imprimir.</p>'
-    + cod("pip install pymupdf pillow")
-    + '<div style="margin-top:5mm">' + antetitulo("2 · INSTALAR LA SKILL") + '</div>'
-    + '<p class="cuerpo">Dos comandos dentro de Claude Code. Después, reinicia la '
-      'sesión.</p>'
-    + cod("/plugin marketplace add nsujpg/ico-lab\n/plugin install ico-docs@ico")
-    + '<p class="cuerpo">Se activa sola al pedir cualquier PDF de ICO, o a mano con '
-      '<strong>/ico-docs:ico-pdf</strong>. Para actualizarla: '
-      '<strong>/plugin marketplace update ico</strong>.</p>'
-    + '<div style="margin-top:4mm">' + antetitulo("SI ALGO FALLA") + '</div>'
-    + problemas_html, 3)
+    paso(1, "Instalar Claude en tu ordenador",
+         "Es una aplicación normal, como cualquier otra. Se descarga, se instala y se abre.",
+         [sub("Descarga el instalador que corresponda a tu ordenador.<br>"
+              "<strong>Mac:</strong> " + enlace(MAC, "claude.ai/api/desktop/darwin/…") +
+              "<br><strong>Windows:</strong> " + enlace(WIN, "claude.ai/api/desktop/win32/…")),
+          sub("Ábrelo y sigue los pasos de instalación. Cuando acabe, abre "
+              "<strong>Claude</strong> desde el menú de inicio en Windows o desde "
+              "Aplicaciones en Mac."),
+          sub("Inicia sesión con tu cuenta."),
+          sub("Arriba en el centro verás tres pestañas: <strong>Chat</strong>, "
+              "<strong>Cowork</strong> y <strong>Code</strong>. Pulsa "
+              "<strong>Code</strong>: es la única que vas a usar. Si al pulsarla te pide "
+              "pasar a un plan de pago, es que tu cuenta todavía no lo incluye."),
+          sub("<strong>Solo en Windows:</strong> necesitas tener Git instalado o Claude no "
+              "te dejará elegir una carpeta. Se descarga de " + enlace(GIT) + " y se "
+              "instala dejando todas las opciones como vienen."),
+          listo("Se abre la pestaña <strong>Code</strong> sin pedirte nada y te deja "
+                "elegir una carpeta de tu ordenador.")]), 3)
 
-fases_html = "".join(
-    '<div class="fase"><h3><span class="n">%d</span>%s</h3><p>%s</p>%s</div>'
-    % (i + 1, t, d, cod(c) if c else "") for i, (t, d, c) in enumerate(FASES))
 p4 = pagina(
-    seccion("EL FLUJO", "Cómo se trabaja una pieza", "pieza")
-    + '<p class="cuerpo">Cinco fases, siempre en el mismo orden. Las dos últimas son las que '
-      'separan un documento entregable de uno que vuelve.</p>' + fases_html, 4)
+    paso(2, "Instalar el sistema de ICO",
+         "Esto es lo que le enseña a Claude la marca, las reglas y las comprobaciones. "
+         "Se hace una sola vez.",
+         [sub("En la pestaña <strong>Code</strong>, elige <strong>Local</strong> y pulsa "
+              "<strong>Select folder</strong>. Escoge la carpeta donde vayas a guardar los "
+              "documentos de ICO. Si no tienes ninguna, crea una en el escritorio y "
+              "selecciónala."),
+          sub("En el recuadro donde se escribe, escribe esto y pulsa Enter:",
+              cod("/plugin marketplace add nsujpg/ico-lab")),
+          sub("Cuando termine, escribe esto y pulsa Enter:",
+              cod("/plugin install ico-docs@ico")),
+          sub("<strong>Cierra Claude y vuelve a abrirlo.</strong> Si no lo reinicias, "
+              "parecerá que no se ha instalado."),
+          sub("Para comprobar que está, escribe <strong>/plugin list</strong>.")]
+         + [listo("En la lista aparece <strong>ico-docs</strong>. Con eso, Claude ya "
+                  "conoce la marca de ICO y todas sus reglas.")]), 4)
+
+p5 = pagina(
+    paso(3, "Instalar las dos tipografías",
+         "Son las de la marca. Sin ellas los títulos salen con otra letra y el documento no "
+         "parece de ICO.",
+         [sub("Entra en " + enlace(POPPINS) + " y pulsa <strong>Get font</strong> y luego "
+              "<strong>Download all</strong>."),
+          sub("Haz lo mismo en " + enlace(PLAYFAIR) + "."),
+          sub("Se te habrán descargado dos archivos comprimidos. Ábrelos y descomprímelos."),
+          sub("<strong>En Windows:</strong> entra en la carpeta, selecciona todos los "
+              "archivos acabados en <strong>.ttf</strong>, haz clic derecho y elige "
+              "<strong>Instalar</strong>.<br><strong>En Mac:</strong> selecciona todos los "
+              "<strong>.ttf</strong>, haz doble clic y pulsa <strong>Instalar fuente</strong>."),
+          sub("No hace falta reiniciar nada."),
+          listo("Al escribir «Poppins» en el buscador de fuentes de tu ordenador, o en "
+                "el desplegable de letras de Word, aparece en la lista. Y lo mismo con "
+                "«Playfair Display».")]), 5)
+
+p6 = pagina(
+    paso(4, "Dejar que Claude prepare el resto",
+         "Faltan un par de herramientas internas, pero no las instalas tú: se las pides a él.",
+         [sub("Abre Claude en la pestaña <strong>Code</strong> y escríbele esto tal cual:",
+              decir("Vamos a hacer documentos del Instituto de Comunicación con la skill "
+                    "ico-pdf. Comprueba si tengo instalado todo lo que necesita y, si falta "
+                    "algo, instálalo tú y dime cuando esté listo.")),
+          sub("Claude te irá pidiendo permiso para ejecutar cosas. Dile que sí. La primera "
+              "vez tarda un par de minutos."),
+          sub("Cuando te diga que está listo, ya no tendrás que volver a hacer esto nunca "
+              "más en este ordenador."),
+          listo("Claude te confirma que tiene todo lo que necesita. Si te dice que le "
+                "falta algo y no puede instalarlo, pégale el mensaje de error tal cual "
+                "y déjale intentarlo otra vez.")]), 6)
+
+p7 = pagina(
+    paso(5, "Pedirle el documento",
+         "A partir de aquí solo se escribe en castellano. Cuanto más concreto seas, menos "
+         "vueltas dará.",
+         [sub("<strong>Si estás rediseñando algo que ya existe</strong>, guarda el archivo "
+              "del cliente en la carpeta que elegiste y dile:",
+              decir("En la carpeta tienes «guia-productividad.pdf», que me ha pasado el "
+                    "cliente. Rediséñalo con el sistema de ICO. El texto tiene que quedar "
+                    "igual, palabra por palabra.")),
+          sub("<strong>Si es un documento nuevo</strong>, dale el texto y explícale de qué va:",
+              decir("Móntame una guía de ICO de seis páginas con este texto. Es un lead "
+                    "magnet, así que la portada tiene que entrar por los ojos y la última "
+                    "página lleva el botón a la masterclass.")),
+          sub("Si algo no te convence, díselo con normalidad: <em>«la portada está sosa»</em>, "
+              "<em>«la página 4 tiene un hueco enorme abajo»</em>, <em>«el logo se ve "
+              "pequeño»</em>. Rehacerlo le cuesta segundos."),
+          listo("Tienes un PDF en la carpeta y Claude te ha enseñado las páginas. "
+                "Todavía no lo des por bueno: falta el paso 6.")]), 7)
+
+p8 = pagina(
+    paso(6, "Comprobarlo antes de darlo por bueno",
+         "El sistema trae dos comprobaciones automáticas. Claude las pasa solo, pero el "
+         "resultado tienes que exigirlo: si no te lo enseña, no está comprobado.",
+         [sub("Antes de aceptar nada, pídele esto:",
+              decir("Pásale las dos puertas de calidad y enséñame los números. Y ábreme "
+                    "las páginas para verlas.")),
+          sub("<strong>La primera comprobación</strong> mide si algún texto se sale por "
+              "abajo, si hay letra demasiado pequeña y si las páginas oscuras se verían en "
+              "blanco en un móvil. Tiene que decir <strong>sin fallos</strong>."),
+          sub("<strong>La segunda</strong> solo aplica cuando adaptas algo del cliente: "
+              "compara palabra por palabra y demuestra que el texto no se ha tocado. Tiene "
+              "que decir <strong>ninguna diferencia real</strong>."),
+          sub("Y después míralo tú. Ningún programa detecta que una página esté fea: para "
+              "eso tienes las cinco preguntas de la página 11."),
+          listo("Claude te ha dado <strong>números concretos</strong> y las páginas "
+                "abiertas para mirarlas. Si te contesta «quedó bien» sin enseñarte "
+                "nada, no está comprobado: vuelve a pedírselo.")]), 8)
+
+reglas_html = "".join(
+    '<div class="mal"><h3>%d. %s</h3><p class="que">%s</p></div>' % (i + 1, t, d)
+    for i, (t, d) in enumerate(REGLAS))
+p9 = pagina(
+    antetitulo("LO INNEGOCIABLE")
+    + '<h2 class="seccion">Cuatro <i>reglas</i></h2>'
+    + '<p class="cuerpo">Claude las aplica solo, pero conviene que las conozcas: son las que '
+      'se notan cuando fallan, y las que hacen que un documento vuelva.</p>'
+    + reglas_html, 9)
+
+anti_html = "".join(
+    '<div class="mal"><h3>%s</h3><p class="que">%s</p></div>' % (t, d) for t, d in ANTI_IA)
+p10 = pagina(
+    antetitulo("CÓMO SABER SI ESTÁ BIEN")
+    + '<h2 class="seccion">Lo que delata a una <i>máquina</i></h2>'
+    + '<p class="cuerpo">Un documento puede cumplir los colores y la tipografía y aun así '
+      'parecer hecho en cadena. Esto es lo que lo delata.</p>'
+    + anti_html, 10)
+
+olor_html = "".join("<li>%s</li>" % o for o in OLOR)
+p11 = pagina(
+    antetitulo("CÓMO SABER SI ESTÁ BIEN")
+    + '<h2 class="seccion">Cinco preguntas antes de <i>enviarlo</i></h2>'
+    + '<p class="cuerpo">Con las páginas delante, hazte estas cinco preguntas. Si respondes '
+      'que sí a la 1, la 2 o la 5, o que no a la 3 o la 4, pídele otra vuelta.</p>'
+    + '<ol class="olor">%s</ol>' % olor_html
+    + '<div style="margin-top:13mm">' + antetitulo("Y UNA COSA MÁS") + '</div>'
+    + '<p class="cuerpo">Si encuentras una errata en el material que te ha pasado el '
+      'cliente, <strong>no la corrijas dentro del documento</strong>. Avísasela por mensaje. '
+      'El texto es suyo, y arreglarlo por tu cuenta es lo que convierte una adaptación en '
+      'otra cosa.</p>', 11)
 
 paleta_html = "".join(
     '<tr><td class="chip"><div style="background:%s"></div></td><td class="hex">%s</td>'
     '<td class="nom">%s</td><td class="uso">%s</td></tr>' % (h, h, n, u)
     for h, n, u in PALETA)
-series_html = "".join(
-    '<div><div class="barra" style="background:%s"></div><div class="et">%s</div></div>'
-    % (h, h) for h in SERIES)
-p5 = pagina(
-    seccion("SISTEMA VISUAL", "Color", "Color")
-    + '<p class="cuerpo">Muestreados de PDFs reales aprobados por el cliente, no elegidos a '
-      'ojo. Si dudas de un color, sácalo del PDF del cliente con '
-      '<strong>extraer_fuente.py</strong> en vez de estimarlo.</p>'
+p12 = pagina(
+    antetitulo("PARA QUE LO RECONOZCAS")
+    + '<h2 class="seccion">Los colores y las <i>letras</i></h2>'
+    + '<p class="cuerpo">No tienes que elegirlos: Claude ya los conoce. Están aquí para que '
+      'sepas identificar cuándo algo se ha salido de la marca.</p>'
     + '<table class="paleta">%s</table>' % paleta_html
-    + '<div style="margin-top:7mm">' + antetitulo("DEGRADADO DE PORTADA Y CIERRE") + '</div>'
-    + '<div style="height:14mm;border-radius:5px;margin-top:3.5mm;background-color:%s;'
-      'background-image:%s"></div>' % (GRAD_PLANO, GRAD)
-    + '<p class="cuerpo">Siempre con un color plano debajo. Sin él, muchos visores de PDF de '
-      'Android dejan la página en blanco y el documento se pierde entero.</p>'
-    + '<div style="margin-top:8mm">' + antetitulo("SERIES DE GRÁFICAS") + '</div>'
-    + '<div class="series">%s</div>' % series_html, 5)
+    + '<div style="margin-top:10mm">' + antetitulo("LAS DOS TIPOGRAFÍAS") + '</div>'
+    + '<div class="tipo"><div class="rol">Playfair Display · solo en titulares</div>'
+      '<div class="muestra playfair" style="font-size:22pt">Ponle un límite a todo</div></div>'
+    + '<div class="tipo"><div class="rol">Poppins · todo lo demás</div>'
+      '<div class="muestra poppins300" style="font-size:11.5pt">Todos tenemos las mismas 24 '
+      'horas. La diferencia no está en quién trabaja más, sino en quién sabe cómo funciona su '
+      'propio cerebro.</div></div>'
+    + '<p class="cuerpo">Los titulares nunca van en mayúsculas, y la última palabra va en '
+      'cursiva y en azul. Es el detalle que hace que un documento se reconozca como de ICO.</p>',
+    12)
 
-tipo_html = ""
-for rol, pt, clase, tam, muestra in ESCALA:
-    est = "font-size:%gpt" % tam
-    if clase == "eyebrow":
-        est += ";letter-spacing:2.4px"
-    tipo_html += ('<div class="tipo"><div class="meta"><span class="rol">%s</span>'
-                  '<span class="pt">%s</span></div><div class="muestra %s" style="%s">%s'
-                  '</div></div>' % (rol, pt, clase, est, muestra))
-p6 = pagina(
-    seccion("SISTEMA VISUAL", "Tipografía", "Tipografía")
-    + '<p class="cuerpo"><strong>Playfair Display 700 solo en titulares</strong>, nunca en '
-      'cuerpo, etiquetas ni pastillas, y nunca en mayúsculas. <strong>Poppins para todo lo '
-      'demás</strong>: Light 300 en cuerpo, 500 y 600 en etiquetas.</p>'
-    + '<div style="margin-top:5mm">%s</div>' % tipo_html
-    + '<div style="margin-top:8mm">' + antetitulo("EL PATRÓN FIRMADO") + '</div>'
-    + '<p class="cuerpo">La última palabra del titular va en itálica y en azul. Sobre fondo '
-      'oscuro, en azul claro.</p>'
-    + '<h2 class="seccion" style="margin-top:4mm">Diseña tu día para entrar en <i>flow</i></h2>'
-    + '<p class="cuerpo">Ojo con las tildes en titulares grandes: comprueba que no invadan '
-      'la línea de arriba.</p>', 6)
+problemas_html = "".join(
+    '<div class="mal"><h3>%s</h3><p class="que">%s</p></div>' % (t, d) for t, d in PROBLEMAS)
+p13 = pagina(
+    antetitulo("SI ALGO FALLA")
+    + '<h2 class="seccion">Los tropiezos más <i>comunes</i></h2>'
+    + problemas_html
+    + '<p class="cuerpo" style="margin-top:10mm">Y si te pasa cualquier otra cosa, '
+      '<strong>cuéntasela a Claude tal cual</strong>, con tus palabras y pegándole el error '
+      'si lo hay. Lo normal es que lo resuelva él.</p>', 13)
 
-p7 = pagina(
-    seccion("SISTEMA VISUAL", "Retícula y componentes", "componentes")
-    + '<div class="reticula"><div class="dib"><div class="zona"></div>'
-      '<div class="piecito"></div></div><ul>'
-      '<li>Página <strong>210 × 297 mm</strong></li>'
-      '<li>Márgenes <strong>18 mm</strong> laterales</li>'
-      '<li>Superior <strong>17 mm</strong></li>'
-      '<li>Inferior <strong>19,5 mm</strong></li>'
-      '<li>Columna de texto <strong>174 mm</strong></li>'
-      '<li>Filete del pie a <strong>10,5 mm</strong></li>'
-      '<li>Holgura mínima <strong>3,5 mm</strong></li></ul></div>'
-    + '<p class="cuerpo">La holgura al pie se mide con el script, no a ojo: una caja puede '
-      'quedar a 1 mm del filete y parecer correcta en pantalla.</p>'
-    + '<div style="margin-top:8mm">' + antetitulo("ANTETÍTULO DE SECCIÓN") + '</div>'
-    + '<div style="margin-top:4mm">' + antetitulo("PASO 1")
-    + '<h2 class="seccion">La mentalidad del <i>1%</i></h2></div>'
-    + '<div style="margin-top:8mm">' + antetitulo("CALLOUT") + '</div>'
-    + '<div class="callout" style="margin-top:4mm"><span class="et">Tip práctico</span>'
-      '<p>Sin emoji y sin icono decorativo. La etiqueta en versalitas azules, en línea con '
-      'el texto.</p></div>'
-    + '<div style="margin-top:8mm">' + antetitulo("FIGURA") + '</div>'
-    + '<div class="comp"><div class="cab"><h4>Título de la figura</h4></div>'
-      '<div class="interior"><p>Banda navy arriba solo si la figura tenía título en el '
-      'original. Si el cliente ya la ha dibujado, se usa su vector: sale mejor que cualquier '
-      'reconstrucción y respeta su trabajo.</p></div></div>', 7)
-
-anti_html = "".join(
-    '<div class="mal"><h3>%s</h3><p class="que">%s</p>'
-    '<p class="en-vez"><b>En su lugar:</b> %s</p></div>' % (t, q, e)
-    for t, q, e in ANTI_IA)
-p8 = pagina(
-    seccion("LO QUE SE NOTA", "Lo que delata a una máquina", "máquina")
-    + '<p class="cuerpo">Un PDF puede cumplir la paleta, la tipografía y la retícula y aun '
-      'así cantar. Esto es lo que lo canta.</p>' + anti_html, 8)
-
-puertas_html = ""
-for nombre, sub, puntos in PUERTAS:
-    lis = "".join("<li>%s</li>" % p for p in puntos)
-    puertas_html += ('<div class="puerta"><h3>%s</h3><div class="sub">%s</div><ul>%s</ul>'
-                     '</div>' % (nombre, sub, lis))
-olor_html = "".join("<li>%s</li>" % o for o in OLOR)
-p9 = pagina(
-    seccion("ANTES DE ENTREGAR", "Las puertas de calidad", "calidad")
-    + '<p class="cuerpo">Se miden. <strong>"Se ve bien" no es una puerta.</strong> Las dos se '
-      'pasan siempre antes de enseñar el documento a nadie, y al entregar se dice qué se '
-      'midió.</p>' + puertas_html, 9)
-
-p10 = pagina(
-    seccion("ANTES DE ENTREGAR", "Y después, los <i>ojos</i>")
-    + '<p class="cuerpo">Renderiza las páginas y míralas una a una. Ningún script detecta un '
-      'hueco muerto, un bloque desequilibrado, una línea huérfana ni un titular que parte '
-      'mal.</p>'
-    + cod("python &lt;skill&gt;/qa/render_paginas.py &quot;salida.pdf&quot; --salida ./revision")
-    + '<div style="margin-top:12mm">' + antetitulo("LA PRUEBA DE OLOR") + '</div>'
-    + '<p class="cuerpo">Con las páginas delante, cinco preguntas:</p>'
-    + '<ol class="olor">%s</ol>' % olor_html
-    + '<p class="cuerpo" style="margin-top:7mm">Un sí en la primera, la segunda o la quinta, '
-      'o un no en la tercera o la cuarta, es una ronda más antes de enseñarlo.</p>'
-    + '<div style="margin-top:12mm">' + antetitulo("Y AL ENTREGAR") + '</div>'
-    + '<p class="cuerpo">Di qué has medido. <strong>"Holgura al pie de 7,9 a 24,9 mm, '
-      'fidelidad sin diferencias reales, cero sombras"</strong> vale más que "quedó bien". '
-      'Y si has encontrado una errata o una incoherencia en el material del cliente, se '
-      'señala en el mensaje, nunca se corrige por dentro.</p>', 10)
-
-p11 = """<div class="page oscura">
+p14 = """<div class="page oscura">
   %s
   <div class="cierre">
-    <h2>Si algo de esto se queda corto, se cambia en el repositorio.</h2>
-    <h3>Dónde está todo</h3>
-    <p>La skill vive en <strong>nsujpg/ico-lab</strong>. Las referencias completas están
-       dentro, en <strong>references/</strong>: marca, anti-ia, fidelidad, qa, gráficas y
-       toolchain. Se leen igual de bien sin Claude delante.</p>
-    <p>Los valores de la paleta y la tipografía están muestreados de PDFs reales aprobados.
-       Si el cliente cambia algo, se vuelve a muestrear con el script, no se estima.</p>
-    <div class="codc">/plugin marketplace add nsujpg/ico-lab
-/plugin install ico-docs@ico</div>
+    <h2>Ya está. A partir de aquí solo tienes que pedir.</h2>
+    <h3>Si algo se te queda corto</h3>
+    <p>El sistema completo vive en <strong>%s</strong>. Ahí están todas las referencias: la
+       marca, las gráficas, las comprobaciones y el detalle técnico, por si alguna vez hace
+       falta mirarlo.</p>
+    <p>Si ves que falta algo o que una regla ya no encaja, dilo. Esto se cambia, y el cambio
+       le llega a todo el equipo escribiendo
+       <strong>/plugin marketplace update ico</strong>.</p>
     <div class="url">Cabaña Studio · humbertocabana.com</div>
   </div>
-</div>""" % MARCA
+</div>""" % (MARCA, enlace(REPO, "github.com/nsujpg/ico-lab"))
 
 html = ('<!doctype html><html lang="es"><head><meta charset="utf-8">'
-        '<title>Sistema de documentos ICO</title><style>%s</style></head><body>'
-        '%s%s%s%s%s%s%s%s%s%s%s</body></html>'
-        % (CSS, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11))
+        '<title>Cómo hacer un documento de ICO</title><style>%s</style></head><body>'
+        '%s%s%s%s%s%s%s%s%s%s%s%s%s%s</body></html>'
+        % (CSS, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14))
 
 io.open(SALIDA, "w", encoding="utf-8").write(html)
 print("OK -> %s  (%d bytes)" % (SALIDA, len(html)))
