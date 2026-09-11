@@ -1,0 +1,181 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Sistema de documentos ICO</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{font-family:'Poppins','Segoe UI',sans-serif;color:#4D5872;background:#fff}
+@page{size:A4;margin:0}
+.page{width:210mm;height:297mm;position:relative;overflow:hidden;background:#fff;
+  page-break-after:always;break-after:page}
+.page:last-child{page-break-after:auto;break-after:auto}
+.inner{position:absolute;left:18mm;right:18mm;top:17mm;bottom:19.5mm}
+
+.oscura{background-color:#12297A;background-image:linear-gradient(135deg,#1982DE 0%,#1242A8 30%,#12297A 62%,#0A1636 100%)}
+
+.marca{position:absolute;top:24mm;left:20mm;display:flex;align-items:center;gap:7mm}
+.marca img{width:20mm;height:20mm;display:block}
+.marca span{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:16pt;
+  line-height:1.2;color:#fff;letter-spacing:.2px}
+.marca-filete{position:absolute;left:20mm;right:20mm;top:58mm;height:1px;
+  background:rgba(255,255,255,.3)}
+
+h1.portada{position:absolute;left:20mm;right:22mm;top:82mm;
+  font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:46pt;
+  line-height:1.07;color:#fff;letter-spacing:-.7px}
+h1.portada i{font-style:italic;color:#6DB8FF}
+.portada-rule{position:absolute;left:20mm;top:186mm;width:36mm;height:2.5px;background:#6DB8FF}
+.portada-sub{position:absolute;left:20mm;right:44mm;top:195mm;font-size:13pt;
+  line-height:1.55;color:#CFE0FF;font-weight:300}
+.portada-meta{position:absolute;left:20mm;right:20mm;bottom:22mm;
+  border-top:1px solid rgba(255,255,255,.22);padding-top:6mm;
+  display:flex;justify-content:space-between;font-size:9.5pt;color:#9EC2F0;
+  letter-spacing:.6px}
+
+.antetitulo{display:flex;align-items:center;gap:3.6mm}
+.antetitulo .barra{width:9mm;height:2.6px;background:#1A52D8;flex:0 0 auto}
+.antetitulo .etiqueta{font-size:8.6pt;font-weight:600;letter-spacing:2.4px;
+  color:#1A52D8;text-transform:uppercase}
+.antetitulo .linea{flex:1;height:1.4px;background:#172B8F;opacity:.22}
+h2.seccion{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:20pt;
+  line-height:1.14;color:#172B8F;letter-spacing:-.2px;margin-top:1.8mm}
+h2.seccion i{font-style:italic;color:#1A52D8}
+
+.cuerpo{font-size:11.5pt;line-height:1.6;font-weight:300;color:#4D5872;margin-top:3.4mm}
+.cuerpo strong{font-weight:600;color:#172B8F}
+.cuerpo em{font-style:italic}
+
+.apertura{background:#172B8F;border-radius:6px;padding:8.5mm 9mm 8mm}
+.apertura p{font-size:11.5pt;line-height:1.6;color:#D8E2F7;font-weight:300}
+.apertura p+p{margin-top:3.4mm}
+.apertura strong{font-weight:600;color:#6DB8FF}
+
+.cod{font-family:Consolas,'Courier New',monospace;font-size:9.8pt;line-height:1.55;
+  background:#F1F5FE;border-left:3px solid #1A52D8;border-radius:0 5px 5px 0;
+  padding:3.4mm 5mm;margin-top:3.6mm;color:#172B8F;white-space:pre-wrap;
+  word-break:break-word}
+
+.regla{display:flex;gap:5mm;margin-top:12mm}
+.regla .num{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:23pt;
+  color:#1A52D8;line-height:1;flex:0 0 12mm}
+.regla h3{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:14.5pt;
+  color:#172B8F;line-height:1.2}
+.regla p{font-size:11pt;line-height:1.58;font-weight:300;color:#4D5872;margin-top:2mm}
+
+.fase{margin-top:7mm}
+.fase h3{font-size:12pt;font-weight:600;color:#172B8F}
+.fase h3 .n{color:#1A52D8;margin-right:2.5mm}
+.fase p{font-size:11pt;line-height:1.58;font-weight:300;color:#4D5872;margin-top:1.8mm}
+
+table.paleta{width:100%;border-collapse:collapse;margin-top:5mm}
+table.paleta td{padding:2.2mm 0;border-bottom:1px solid #DFE9FB;vertical-align:middle}
+table.paleta .chip{width:18mm}
+table.paleta .chip div{width:16mm;height:9mm;border-radius:3px;
+  border:1px solid rgba(0,0,0,.07)}
+table.paleta .hex{font-family:Consolas,monospace;font-size:10.2pt;color:#172B8F;
+  width:27mm;font-weight:600}
+table.paleta .nom{font-size:11pt;font-weight:500;color:#172B8F;width:43mm}
+table.paleta .uso{font-size:10.6pt;font-weight:300;color:#4D5872}
+
+.series{display:flex;gap:4mm;margin-top:4mm}
+.series div{flex:1;text-align:center}
+.series .barra{height:8mm;border-radius:3px}
+.series .et{font-family:Consolas,monospace;font-size:9.2pt;color:#4D5872;margin-top:1.8mm}
+
+.tipo{border-bottom:1px solid #DFE9FB;padding:4mm 0}
+.tipo .meta{display:flex;gap:4mm;align-items:baseline}
+.tipo .rol{font-size:8.6pt;font-weight:600;letter-spacing:1.6px;color:#1A52D8;
+  text-transform:uppercase;flex:0 0 46mm}
+.tipo .pt{font-family:Consolas,monospace;font-size:9.8pt;color:#172B8F;font-weight:600}
+.tipo .muestra{margin-top:2.2mm;color:#172B8F}
+.playfair{font-family:'Playfair Display',Georgia,serif;font-weight:700;line-height:1.1}
+.poppins300{font-weight:300;color:#4D5872;line-height:1.5}
+.poppins400{font-weight:400;color:#A9B0C4}
+.eyebrow{font-weight:600;letter-spacing:2.4px;color:#1A52D8;text-transform:uppercase}
+
+.reticula{margin-top:5mm;display:flex;gap:9mm;align-items:flex-start}
+.reticula .dib{flex:0 0 56mm;height:79mm;border:1px solid #172B8F;position:relative;
+  background:#fff}
+.reticula .zona{position:absolute;left:4.8mm;right:4.8mm;top:4.5mm;bottom:5.2mm;
+  background:#EDF2FD;border:1px dashed #1A52D8}
+.reticula .piecito{position:absolute;left:4.8mm;right:4.8mm;bottom:2.8mm;height:1px;
+  background:#A9B0C4}
+.reticula ul{list-style:none;font-size:11pt;line-height:1.95;font-weight:300;color:#4D5872}
+.reticula li strong{font-weight:600;color:#172B8F;font-family:Consolas,monospace;
+  font-size:10.2pt}
+
+.comp{border:1px solid #DFE9FB;border-radius:7px;margin-top:4mm;overflow:hidden}
+.comp .cab{background:#172B8F;padding:2.8mm 6mm}
+.comp .cab h4{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:12pt;
+  color:#fff}
+.comp .interior{padding:4.4mm 6mm 5mm}
+.comp .interior p{font-size:11pt;font-weight:300;line-height:1.55;color:#4D5872}
+.callout{background:#EDF2FD;border-left:3px solid #1A52D8;border-radius:0 6px 6px 0;
+  padding:3.6mm 6.5mm 3.8mm 6mm}
+.callout .et{font-size:8.6pt;font-weight:600;letter-spacing:2.2px;color:#1A52D8;
+  text-transform:uppercase;margin-right:3.4mm}
+.callout p{font-size:11pt;line-height:1.55;font-weight:300;color:#4D5872;display:inline}
+
+.mal{margin-top:4.4mm;border-left:3px solid #DFE9FB;padding-left:5.5mm}
+.mal h3{font-size:12pt;font-weight:600;color:#172B8F}
+.mal .que{font-size:11pt;line-height:1.55;font-weight:300;color:#4D5872;margin-top:1.6mm}
+.mal .en-vez{font-size:11pt;line-height:1.55;font-weight:300;color:#172B8F;margin-top:1.6mm}
+.mal .en-vez b{font-weight:600;color:#1A52D8}
+
+.puerta{margin-top:18mm}
+.puerta h3{font-family:Consolas,monospace;font-size:12.5pt;font-weight:700;color:#172B8F}
+.puerta .sub{font-size:11pt;font-weight:300;color:#4D5872;margin-top:2.4mm;
+  padding-bottom:4.5mm;border-bottom:1px solid #DFE9FB}
+.puerta ul{list-style:none;margin-top:5mm}
+.puerta li{font-size:11pt;line-height:1.58;font-weight:300;color:#4D5872;
+  padding-left:6.5mm;position:relative;margin-top:5.4mm}
+.puerta li:before{content:"";position:absolute;left:0;top:2.4mm;width:2.6mm;height:2.6mm;
+  border-radius:50%;background:#1A52D8}
+
+.olor{counter-reset:o;margin-top:8mm}
+.olor li{list-style:none;font-size:11pt;line-height:1.55;font-weight:300;color:#4D5872;
+  padding-left:9mm;position:relative;margin-top:10mm}
+.olor li:before{counter-increment:o;content:counter(o);position:absolute;left:0;top:-.4mm;
+  font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:13pt;color:#1A52D8}
+
+.pie{position:absolute;left:18mm;right:18mm;bottom:10.5mm;border-top:1px solid #E5E9F2;
+  padding-top:2.8mm;display:flex;justify-content:space-between;align-items:center;
+  font-size:8.5pt;color:#A9B0C4;letter-spacing:.3px}
+.pie .centro{position:absolute;left:0;right:0;text-align:center}
+
+.cierre{position:absolute;left:20mm;right:20mm;top:76mm;bottom:20mm;
+  display:flex;flex-direction:column}
+.cierre h2{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:27pt;
+  line-height:1.14;color:#fff;letter-spacing:-.4px}
+.cierre h3{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:17.5pt;
+  color:#F1C86A;margin-top:11mm}
+.cierre p{font-size:11.5pt;line-height:1.62;color:#D5E4FA;font-weight:300;margin-top:4.4mm}
+.cierre p strong{font-weight:600;color:#fff}
+.cierre .codc{font-family:Consolas,monospace;font-size:10.6pt;line-height:1.62;
+  color:#fff;background:rgba(255,255,255,.10);border-left:3px solid #6DB8FF;
+  border-radius:0 5px 5px 0;padding:3.8mm 5mm;margin-top:6mm;white-space:pre-wrap}
+.cierre .url{margin-top:auto;font-size:9.5pt;letter-spacing:.6px;color:#9EC2F0}
+</style></head><body><div class="page oscura">
+  <div class="marca"><img src="assets/iso_white.png" alt=""><span>Instituto de<br>Comunicación</span></div><div class="marca-filete"></div>
+  <h1 class="portada">Sistema de documentos<br>del Instituto de <i>Comunicación</i></h1>
+  <div class="portada-rule"></div>
+  <p class="portada-sub">Cómo producir los PDFs del cliente sin repetir las rondas que ya
+     costaron rechazos. Guía de uso para el equipo.</p>
+  <div class="portada-meta"><span>Cabaña Studio</span><span>skill ico-pdf · v1.0</span></div>
+</div><div class="page"><div class="inner"><div class="apertura"><p>Esto no es un manual de estilo decorativo. Es lo que hemos aprendido produciendo documentos para ICO, incluidas las veces que el cliente los devolvió: logos que no se leían, huecos muertos a media página, cuerpos de texto pequeños y ocho bloques idénticos repetidos.</p><p>Va instalado como skill de Claude, así que no hay que recordarlo: se activa solo al pedir cualquier PDF de ICO. <strong>Lo que sí hay que conocer son las cuatro reglas de abajo</strong>, porque son las que el cliente nota.</p></div><div style="margin-top:10mm"><div class="antetitulo"><span class="barra"></span><span class="etiqueta">LO INNEGOCIABLE</span><span class="linea"></span></div><h2 class="seccion">Cuatro <i>reglas</i></h2><div class="regla"><div class="num">01</div><div><h3>El contenido es del cliente</h3><p>Adaptar no es reinterpretar. Ni una palabra propia, ni resúmenes, ni cajas de consejos, ni reordenar apartados. Las erratas se reproducen tal cual y se avisan aparte, nunca se corrigen por dentro.</p></div></div><div class="regla"><div class="num">02</div><div><h3>La marca se lee o no está</h3><p>Isotipo de 20 mm con el nombre al lado, en portada y cierre. Cero sellos pequeños en las esquinas de las páginas interiores: un logo que no se lee es ruido.</p></div></div><div class="regla"><div class="num">03</div><div><h3>Cero sombras</h3><p>Ni en texto ni en elementos. El diseño de ICO es plano. Para legibilidad sobre foto se usa un scrim de fondo, que es tratamiento de imagen, no una sombra.</p></div></div><div class="regla"><div class="num">04</div><div><h3>Nada por debajo de 11,5 pt</h3><p>En texto de lectura. Los rótulos de una figura y los folios son la única excepción, y tienen su propio suelo.</p></div></div></div></div><div class="pie"><span></span><span class="centro">Sistema de documentos · Instituto de Comunicación</span><span>02</span></div></div><div class="page"><div class="inner"><div class="antetitulo"><span class="barra"></span><span class="etiqueta">EMPEZAR</span><span class="linea"></span></div><h2 class="seccion">Instalación en cinco <i>minutos</i></h2><p class="cuerpo">El repositorio es privado: pide que te añadan como colaborador antes de empezar.</p><div style="margin-top:5mm"><div class="antetitulo"><span class="barra"></span><span class="etiqueta">1 · REQUISITOS</span><span class="linea"></span></div></div><p class="cuerpo">Python con dos librerías y las dos fuentes de la marca instaladas en el sistema: <strong>Poppins</strong> y <strong>Playfair Display</strong>, que se bajan de Google Fonts. Así el CSS no depende de la red al imprimir.</p><pre class="cod">pip install pymupdf pillow</pre><div style="margin-top:5mm"><div class="antetitulo"><span class="barra"></span><span class="etiqueta">2 · ACCESO Y SKILL</span><span class="linea"></span></div></div><p class="cuerpo">Lo primero en la terminal, lo segundo dentro de Claude Code. Después, reinicia la sesión.</p><pre class="cod">gh auth login
+
+/plugin marketplace add nsujpg/ico-lab
+/plugin install ico-docs@ico</pre><p class="cuerpo">Se activa sola al pedir cualquier PDF de ICO, o a mano con <strong>/ico-docs:ico-pdf</strong>. Para actualizarla: <strong>/plugin marketplace update ico</strong>.</p><div style="margin-top:4mm"><div class="antetitulo"><span class="barra"></span><span class="etiqueta">SI ALGO FALLA</span><span class="linea"></span></div></div><div class="mal"><h3>El <em>marketplace add</em> no clona</h3><p class="que">El repositorio es privado. Pide que te añadan como colaborador y haz <strong>gh auth login</strong> en tu máquina.</p></div><div class="mal"><h3>Los titulares salen con otra tipografía</h3><p class="que">Faltan Poppins o Playfair Display en el sistema. Se bajan de Google Fonts y se instalan como cualquier otra fuente.</p></div><div class="mal"><h3>El PDF no se actualiza al reimprimir</h3><p class="que">Chromium a veces termina sin escribir y sin avisar. Comprueba la fecha del archivo después de imprimir, no des por hecho que se ha escrito.</p></div><div class="mal"><h3>Las páginas oscuras salen en blanco en el móvil</h3><p class="que">Es un degradado sin color plano debajo. Parte el atajo de CSS en <strong>background-color</strong> más <strong>background-image</strong>.</p></div></div><div class="pie"><span></span><span class="centro">Sistema de documentos · Instituto de Comunicación</span><span>03</span></div></div><div class="page"><div class="inner"><div class="antetitulo"><span class="barra"></span><span class="etiqueta">EL FLUJO</span><span class="linea"></span></div><h2 class="seccion">Cómo se trabaja una <i>pieza</i></h2><p class="cuerpo">Cinco fases, siempre en el mismo orden. Las dos últimas son las que separan un documento entregable de uno que vuelve.</p><div class="fase"><h3><span class="n">1</span>Leer la fuente de verdad</h3><p>Del PDF o del .ai del cliente se saca todo: el texto íntegro, las páginas en imagen, los assets con la transparencia resuelta y la paleta real muestreada de los vectores. Nunca se maqueta de memoria ni a ojo.</p><pre class="cod">python &lt;skill&gt;/qa/extraer_fuente.py &quot;original.pdf&quot; --salida ./fuente</pre></div><div class="fase"><h3><span class="n">2</span>Decidir el sistema antes de maquetar</h3><p>Mira las páginas del original y las piezas anteriores. Decide retícula, jerarquía y ritmo, y escríbelo antes de tocar CSS. Pregunta de control: ¿esta pieza tiene un sistema, o son ocho bloques iguales repetidos?</p></div><div class="fase"><h3><span class="n">3</span>Construir</h3><p>HTML y CSS impresos a PDF con un Chromium en modo headless. Los tokens del sistema están en plantilla/ico.css.</p><pre class="cod">&lt;chromium&gt; --headless=new --disable-gpu --no-pdf-header-footer \
+  --print-to-pdf=&quot;salida.pdf&quot; &quot;file:///ruta/documento.html&quot;</pre></div><div class="fase"><h3><span class="n">4</span>Pasar las puertas de calidad</h3><p>Se miden, no se estiman. Las dos son obligatorias antes de enseñar nada a nadie.</p><pre class="cod">python &lt;skill&gt;/qa/qa_maquetacion.py &quot;salida.pdf&quot; --html documento.html
+python &lt;skill&gt;/qa/qa_fidelidad.py &quot;original.pdf&quot; &quot;salida.pdf&quot;</pre></div><div class="fase"><h3><span class="n">5</span>Mirar las páginas</h3><p>Un script que pasa no garantiza una página bien compuesta. Los huecos muertos, los bloques desequilibrados y las líneas huérfanas solo se ven mirando.</p><pre class="cod">python &lt;skill&gt;/qa/render_paginas.py &quot;salida.pdf&quot; --salida ./revision</pre></div></div><div class="pie"><span></span><span class="centro">Sistema de documentos · Instituto de Comunicación</span><span>04</span></div></div><div class="page"><div class="inner"><div class="antetitulo"><span class="barra"></span><span class="etiqueta">SISTEMA VISUAL</span><span class="linea"></span></div><h2 class="seccion"><i>Color</i></h2><p class="cuerpo">Muestreados de PDFs reales aprobados por el cliente, no elegidos a ojo. Si dudas de un color, sácalo del PDF del cliente con <strong>extraer_fuente.py</strong> en vez de estimarlo.</p><table class="paleta"><tr><td class="chip"><div style="background:#172B8F"></div></td><td class="hex">#172B8F</td><td class="nom">Navy</td><td class="uso">Titulares, strong, bloques macizos</td></tr><tr><td class="chip"><div style="background:#4D5872"></div></td><td class="hex">#4D5872</td><td class="nom">Tinta</td><td class="uso">Cuerpo de texto</td></tr><tr><td class="chip"><div style="background:#1A52D8"></div></td><td class="hex">#1A52D8</td><td class="nom">Azul de acción</td><td class="uso">Filetes, antetítulos, borde de callout</td></tr><tr><td class="chip"><div style="background:#6DB8FF"></div></td><td class="hex">#6DB8FF</td><td class="nom">Azul claro</td><td class="uso">Acentos sobre fondo oscuro</td></tr><tr><td class="chip"><div style="background:#0068FF"></div></td><td class="hex">#0068FF</td><td class="nom">Azul del isotipo</td><td class="uso">Solo la marca</td></tr><tr><td class="chip"><div style="background:#EDF2FD"></div></td><td class="hex">#EDF2FD</td><td class="nom">Lavanda</td><td class="uso">Paneles y callouts</td></tr><tr><td class="chip"><div style="background:#F1F5FE"></div></td><td class="hex">#F1F5FE</td><td class="nom">Lavanda claro</td><td class="uso">Caja de tip</td></tr><tr><td class="chip"><div style="background:#DFE9FB"></div></td><td class="hex">#DFE9FB</td><td class="nom">Filete</td><td class="uso">Bordes de figura y retícula</td></tr><tr><td class="chip"><div style="background:#A9B0C4"></div></td><td class="hex">#A9B0C4</td><td class="nom">Apagado</td><td class="uso">Pies y folios</td></tr><tr><td class="chip"><div style="background:#F1C86A"></div></td><td class="hex">#F1C86A</td><td class="nom">Dorado</td><td class="uso">Subtitulares de cierre</td></tr></table><div style="margin-top:7mm"><div class="antetitulo"><span class="barra"></span><span class="etiqueta">DEGRADADO DE PORTADA Y CIERRE</span><span class="linea"></span></div></div><div style="height:14mm;border-radius:5px;margin-top:3.5mm;background-color:#12297A;background-image:linear-gradient(135deg,#1982DE 0%,#1242A8 30%,#12297A 62%,#0A1636 100%)"></div><p class="cuerpo">Siempre con un color plano debajo. Sin él, muchos visores de PDF de Android dejan la página en blanco y el documento se pierde entero.</p><div style="margin-top:8mm"><div class="antetitulo"><span class="barra"></span><span class="etiqueta">SERIES DE GRÁFICAS</span><span class="linea"></span></div></div><div class="series"><div><div class="barra" style="background:#6DB8FF"></div><div class="et">#6DB8FF</div></div><div><div class="barra" style="background:#37B0A6"></div><div class="et">#37B0A6</div></div><div><div class="barra" style="background:#3F6BD6"></div><div class="et">#3F6BD6</div></div><div><div class="barra" style="background:#F2B134"></div><div class="et">#F2B134</div></div></div></div><div class="pie"><span></span><span class="centro">Sistema de documentos · Instituto de Comunicación</span><span>05</span></div></div><div class="page"><div class="inner"><div class="antetitulo"><span class="barra"></span><span class="etiqueta">SISTEMA VISUAL</span><span class="linea"></span></div><h2 class="seccion"><i>Tipografía</i></h2><p class="cuerpo"><strong>Playfair Display 700 solo en titulares</strong>, nunca en cuerpo, etiquetas ni pastillas, y nunca en mayúsculas. <strong>Poppins para todo lo demás</strong>: Light 300 en cuerpo, 500 y 600 en etiquetas.</p><div style="margin-top:5mm"><div class="tipo"><div class="meta"><span class="rol">Titular de portada</span><span class="pt">54 pt</span></div><div class="muestra playfair" style="font-size:54pt">Guía de productividad</div></div><div class="tipo"><div class="meta"><span class="rol">Titular de sección</span><span class="pt">19 pt</span></div><div class="muestra playfair" style="font-size:19pt">Ponle un límite a todo</div></div><div class="tipo"><div class="meta"><span class="rol">Cuerpo</span><span class="pt">11,5 pt</span></div><div class="muestra poppins300" style="font-size:11.5pt">Todos tenemos las mismas 24 horas. La diferencia no está en quién trabaja más.</div></div><div class="tipo"><div class="meta"><span class="rol">Texto de callout</span><span class="pt">11 pt</span></div><div class="muestra poppins300" style="font-size:11pt">Elige una sola habilidad y dedícale 20 minutos cada día.</div></div><div class="tipo"><div class="meta"><span class="rol">Antetítulo</span><span class="pt">8,6 pt</span></div><div class="muestra eyebrow" style="font-size:8.6pt;letter-spacing:2.4px">PASO 1</div></div><div class="tipo"><div class="meta"><span class="rol">Pie y folio</span><span class="pt">8,5 pt</span></div><div class="muestra poppins400" style="font-size:8.5pt">Instituto de Comunicación</div></div></div><div style="margin-top:8mm"><div class="antetitulo"><span class="barra"></span><span class="etiqueta">EL PATRÓN FIRMADO</span><span class="linea"></span></div></div><p class="cuerpo">La última palabra del titular va en itálica y en azul. Sobre fondo oscuro, en azul claro.</p><h2 class="seccion" style="margin-top:4mm">Diseña tu día para entrar en <i>flow</i></h2><p class="cuerpo">Ojo con las tildes en titulares grandes: comprueba que no invadan la línea de arriba.</p></div><div class="pie"><span></span><span class="centro">Sistema de documentos · Instituto de Comunicación</span><span>06</span></div></div><div class="page"><div class="inner"><div class="antetitulo"><span class="barra"></span><span class="etiqueta">SISTEMA VISUAL</span><span class="linea"></span></div><h2 class="seccion">Retícula y <i>componentes</i></h2><div class="reticula"><div class="dib"><div class="zona"></div><div class="piecito"></div></div><ul><li>Página <strong>210 × 297 mm</strong></li><li>Márgenes <strong>18 mm</strong> laterales</li><li>Superior <strong>17 mm</strong></li><li>Inferior <strong>19,5 mm</strong></li><li>Columna de texto <strong>174 mm</strong></li><li>Filete del pie a <strong>10,5 mm</strong></li><li>Holgura mínima <strong>3,5 mm</strong></li></ul></div><p class="cuerpo">La holgura al pie se mide con el script, no a ojo: una caja puede quedar a 1 mm del filete y parecer correcta en pantalla.</p><div style="margin-top:8mm"><div class="antetitulo"><span class="barra"></span><span class="etiqueta">ANTETÍTULO DE SECCIÓN</span><span class="linea"></span></div></div><div style="margin-top:4mm"><div class="antetitulo"><span class="barra"></span><span class="etiqueta">PASO 1</span><span class="linea"></span></div><h2 class="seccion">La mentalidad del <i>1%</i></h2></div><div style="margin-top:8mm"><div class="antetitulo"><span class="barra"></span><span class="etiqueta">CALLOUT</span><span class="linea"></span></div></div><div class="callout" style="margin-top:4mm"><span class="et">Tip práctico</span><p>Sin emoji y sin icono decorativo. La etiqueta en versalitas azules, en línea con el texto.</p></div><div style="margin-top:8mm"><div class="antetitulo"><span class="barra"></span><span class="etiqueta">FIGURA</span><span class="linea"></span></div></div><div class="comp"><div class="cab"><h4>Título de la figura</h4></div><div class="interior"><p>Banda navy arriba solo si la figura tenía título en el original. Si el cliente ya la ha dibujado, se usa su vector: sale mejor que cualquier reconstrucción y respeta su trabajo.</p></div></div></div><div class="pie"><span></span><span class="centro">Sistema de documentos · Instituto de Comunicación</span><span>07</span></div></div><div class="page"><div class="inner"><div class="antetitulo"><span class="barra"></span><span class="etiqueta">LO QUE SE NOTA</span><span class="linea"></span></div><h2 class="seccion">Lo que delata a una <i>máquina</i></h2><p class="cuerpo">Un PDF puede cumplir la paleta, la tipografía y la retícula y aun así cantar. Esto es lo que lo canta.</p><div class="mal"><h3>El mismo bloque repetido N veces</h3><p class="que">Ocho pasos con ocho pastillas idénticas no es un sistema, es un formulario.</p><p class="en-vez"><b>En su lugar:</b> Antetítulo más titular grande en Playfair y filete. El color estructura, no rellena.</p></div><div class="mal"><h3>Huecos muertos</h3><p class="que">Media página en blanco al final porque el contenido se acabó. Es la firma más clara de maquetación automática.</p><p class="en-vez"><b>En su lugar:</b> Reparte el aire, agranda la figura o recompón la paginación. Un margen inferior de 20 a 25 mm es normal; 40 mm es un agujero.</p></div><div class="mal"><h3>Todo centrado</h3><p class="que">Portada centrada, título centrado, subtítulo centrado. Seguro y anodino.</p><p class="en-vez"><b>En su lugar:</b> Composición asimétrica, anclada abajo, con la foto a sangre.</p></div><div class="mal"><h3>La marca repetida en miniatura</h3><p class="que">Un isotipo de 7 mm en la esquina de cada página no comunica marca.</p><p class="en-vez"><b>En su lugar:</b> Marca grande en portada y cierre; en interiores, el nombre en el pie y nada más.</p></div><div class="mal"><h3>Decoración por defecto</h3><p class="que">Emojis, iconos genéricos, cajas con borde alrededor de todo, subrayados de color.</p><p class="en-vez"><b>En su lugar:</b> Un punto focal por página. Si resaltas todo, no resaltas nada: dos o tres énfasis en todo el documento.</p></div><div class="mal"><h3>Gráficas ilegibles</h3><p class="que">Curvas sin leyenda, etiquetas flotando lejos de lo que nombran, texto girado sobre fondo de bajo contraste.</p><p class="en-vez"><b>En su lugar:</b> Cada etiqueta pegada a su curva con un punto y una guía.</p></div></div><div class="pie"><span></span><span class="centro">Sistema de documentos · Instituto de Comunicación</span><span>08</span></div></div><div class="page"><div class="inner"><div class="antetitulo"><span class="barra"></span><span class="etiqueta">ANTES DE ENTREGAR</span><span class="linea"></span></div><h2 class="seccion">Las puertas de <i>calidad</i></h2><p class="cuerpo">Se miden. <strong>"Se ve bien" no es una puerta.</strong> Las dos se pasan siempre antes de enseñar el documento a nadie, y al entregar se dice qué se midió.</p><div class="puerta"><h3>qa_maquetacion.py</h3><div class="sub">Holgura al pie, cuerpos de texto, degradados y sombras</div><ul><li>Mide en milímetros lo que hay entre el último píxel de contenido y el filete del pie. Por debajo de 3,5 mm es desborde. Caza páginas que a ojo parecen correctas.</li><li>Lista los cuerpos reales y separa el texto de lectura del rótulo por volumen, media de caracteres y tipografía, para no llenar el informe de falsos avisos.</li><li>Avisa de los degradados sin color plano debajo, que en muchos visores de Android dejan la página en blanco.</li><li>Cuenta las sombras del HTML. Tienen que ser cero.</li></ul></div><div class="puerta"><h3>qa_fidelidad.py</h3><div class="sub">Demuestra que el texto del cliente no ha cambiado</div><ul><li>Compara la secuencia de palabras de los dos PDFs. A nivel de frase da falsos positivos por los saltos de línea; a nivel de palabra es fiable.</li><li>Recompone las palabras que el letter-spacing parte en letras y clasifica como artefacto lo que tiene las mismas letras en otro troceado o las mismas palabras en otro orden.</li><li>Lo que queda hay que confirmarlo mirando. Una vez comprobado se silencia con --ignorar, nunca antes.</li></ul></div></div><div class="pie"><span></span><span class="centro">Sistema de documentos · Instituto de Comunicación</span><span>09</span></div></div><div class="page"><div class="inner"><div class="antetitulo"><span class="barra"></span><span class="etiqueta">ANTES DE ENTREGAR</span><span class="linea"></span></div><h2 class="seccion">Y después, los <i>ojos</i></h2><p class="cuerpo">Renderiza las páginas y míralas una a una. Ningún script detecta un hueco muerto, un bloque desequilibrado, una línea huérfana ni un titular que parte mal.</p><pre class="cod">python &lt;skill&gt;/qa/render_paginas.py &quot;salida.pdf&quot; --salida ./revision</pre><div style="margin-top:12mm"><div class="antetitulo"><span class="barra"></span><span class="etiqueta">LA PRUEBA DE OLOR</span><span class="linea"></span></div></div><p class="cuerpo">Con las páginas delante, cinco preguntas:</p><ol class="olor"><li>¿Hay algún bloque que aparece idéntico más de tres veces seguidas?</li><li>¿Alguna página tiene más de 30 mm de blanco seguido que no sea margen?</li><li>¿Se lee la marca sin acercarse?</li><li>¿Cada gráfica se entiende sin leer el cuerpo del texto?</li><li>¿Hay algún elemento que esté ahí solo porque quedaba hueco?</li></ol><p class="cuerpo" style="margin-top:7mm">Un sí en la primera, la segunda o la quinta, o un no en la tercera o la cuarta, es una ronda más antes de enseñarlo.</p><div style="margin-top:12mm"><div class="antetitulo"><span class="barra"></span><span class="etiqueta">Y AL ENTREGAR</span><span class="linea"></span></div></div><p class="cuerpo">Di qué has medido. <strong>"Holgura al pie de 7,9 a 24,9 mm, fidelidad sin diferencias reales, cero sombras"</strong> vale más que "quedó bien". Y si has encontrado una errata o una incoherencia en el material del cliente, se señala en el mensaje, nunca se corrige por dentro.</p></div><div class="pie"><span></span><span class="centro">Sistema de documentos · Instituto de Comunicación</span><span>10</span></div></div><div class="page oscura">
+  <div class="marca"><img src="assets/iso_white.png" alt=""><span>Instituto de<br>Comunicación</span></div><div class="marca-filete"></div>
+  <div class="cierre">
+    <h2>Si algo de esto se queda corto, se cambia en el repositorio.</h2>
+    <h3>Dónde está todo</h3>
+    <p>La skill vive en <strong>nsujpg/ico-lab</strong>. Las referencias completas están
+       dentro, en <strong>references/</strong>: marca, anti-ia, fidelidad, qa, gráficas y
+       toolchain. Se leen igual de bien sin Claude delante.</p>
+    <p>Los valores de la paleta y la tipografía están muestreados de PDFs reales aprobados.
+       Si el cliente cambia algo, se vuelve a muestrear con el script, no se estima.</p>
+    <div class="codc">/plugin marketplace add nsujpg/ico-lab
+/plugin install ico-docs@ico</div>
+    <div class="url">Cabaña Studio · humbertocabana.com</div>
+  </div>
+</div></body></html>

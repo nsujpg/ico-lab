@@ -53,14 +53,17 @@ Si es lo segundo, todavía no hay diseño. Ver `references/anti-ia.md`.
 
 ### 3. Construir
 
-HTML + CSS impreso a PDF con Edge headless. Los tokens del sistema visual están en
+HTML + CSS impreso a PDF. Los tokens del sistema visual están en
 `plantilla/ico.css`; la retícula y los componentes, en `references/marca.md`.
 
 ```bash
-"/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe" \
-  --headless=new --disable-gpu --no-pdf-header-footer \
-  --print-to-pdf="salida.pdf" "file:///ruta/documento.html"
+python <skill>/qa/imprimir.py documento.html salida.pdf
 ```
+
+Usa el Chromium de Playwright y **comprueba que el archivo se ha escrito de verdad**.
+Llamar a Edge o Chrome por línea de comandos funciona hasta que deja de funcionar: se
+engancha a una instancia abierta, sale con código 0 y no escribe nada, y te deja
+revisando un PDF viejo sin enterarte.
 
 Detalles del entorno que ahorran horas en `references/toolchain.md`.
 

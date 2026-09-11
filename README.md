@@ -58,17 +58,28 @@ no se leían, huecos muertos, cuerpos pequeños, bloques repetidos.
 - `qa_maquetacion.py` — holgura al pie en milímetros, cuerpos de texto, degradados sin
   color plano debajo, sombras.
 - `qa_fidelidad.py` — demuestra que la remaquetación no tocó ni una palabra.
+- `imprimir.py` — HTML a PDF con Chromium propio, comprobando que el archivo se ha
+  escrito. Llamar a Edge o Chrome a mano se engancha a una instancia abierta, sale con
+  código 0 y no escribe nada.
 - `render_paginas.py` — rasteriza el PDF para mirarlo página a página, que es lo único que
   caza los huecos muertos.
 
 ## Requisitos
 
 ```bash
-pip install pymupdf pillow
+pip install pymupdf pillow playwright
+python -m playwright install chromium
 ```
 
-Un Chromium (Edge o Chrome, ya lo tienes) y las fuentes **Poppins** y **Playfair Display**
-instaladas en el sistema. Detalle por sistema operativo en `references/toolchain.md`.
+Y las fuentes **Poppins** y **Playfair Display** instaladas en el sistema. Se bajan de
+Google Fonts. Detalle en `references/toolchain.md`.
+
+## La guía para el equipo
+
+`docs/Sistema de documentos ICO - guia de uso.pdf` — 11 páginas con la instalación, el
+sistema visual con las muestras, lo que delata a una máquina y las puertas de calidad.
+Está hecha con la propia skill y pasa sus propias comprobaciones. Se regenera con
+`python docs/build_guia_equipo.py`.
 
 ## Sin Claude Code
 

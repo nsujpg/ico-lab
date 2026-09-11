@@ -56,6 +56,11 @@ Para auditarlo, buscar `scn` en `page.read_contents()`. Caza las páginas afecta
 el HTML no lo delate, porque los degradados dentro de un SVG no aparecen al buscar
 `linear-gradient`. Es lo que hace `qa_maquetacion.py`.
 
+**Llamar al navegador del sistema es frágil.** Edge y Chrome por línea de comandos se
+enganchan a una instancia ya abierta, salen con código 0 y no escriben el PDF. Pasa sin
+aviso y te deja revisando una versión vieja. Por eso `qa/imprimir.py` usa el Chromium de
+Playwright y comprueba la fecha del archivo después de imprimir.
+
 **Los enlaces salen subrayados.** `text-decoration:none` en los botones.
 
 **Los logos extraídos salen con fondo negro.** `doc.extract_image(xref)` devuelve la imagen
