@@ -279,40 +279,41 @@ MARCA = ('<div class="marca"><img src="assets/iso_white.png" alt="">'
 # ------------------------------------------------------------------- páginas
 p1 = """<div class="page oscura">
   %s
-  <h1 class="portada">Cómo hacer un documento del Instituto de <i>Comunicación</i></h1>
+  <h1 class="portada">Cómo diseñar los documentos del Instituto de <i>Comunicación</i></h1>
   <div class="portada-rule"></div>
-  <p class="portada-sub">Seis pasos, de principio a fin. No hace falta saber programar ni
-     escribir una sola línea de código.</p>
+  <p class="portada-sub">El sistema visual de la marca, cómo se monta una pieza y qué
+     comprobar antes de enviarla.</p>
   <div class="portada-meta"><span>Cabaña Studio</span><span>skill ico-pdf · v1.0</span></div>
 </div>""" % MARCA
 
 p2 = pagina(
     '<div class="apertura">'
-    '<p>Los documentos de ICO los va a maquetar Claude por ti. Tú le dices qué quieres, él '
-    'lo monta, lo comprueba y te lo enseña. Esta guía te lleva desde no tener nada '
-    'instalado hasta tener el primer PDF terminado.</p>'
-    '<p><strong>No necesitas saber programar.</strong> Los seis pasos son descargar un '
-    'programa, pegar dos frases y pedirle las cosas a Claude escribiendo en castellano.</p>'
+    '<p>Una guía para diseñar los documentos del Instituto de Comunicación: guías, lead '
+    'magnets, dosieres y one-pagers. Recoge el sistema visual de la marca, cómo se monta '
+    'una pieza de principio a fin y las comprobaciones que pasa antes de salir.</p>'
+    '<p>Los tres primeros pasos se hacen <strong>una sola vez</strong>. Del cuarto en '
+    'adelante es lo que harás cada vez que necesites un documento.</p>'
     '</div>'
-    + '<div style="margin-top:12mm">' + antetitulo("ANTES DE EMPEZAR NECESITAS") + '</div>'
+    + '<div style="margin-top:12mm">' + antetitulo("EN ESTE DOCUMENTO ENCONTRARÁS") + '</div>'
     + '<ul class="checklist">'
-      '<li><strong>Un plan de pago de Claude:</strong> Pro, Max, Team o Enterprise. '
-      'El gratuito no sirve para esto. Los planes están en ' + enlace(PLANES) + '</li>'
-      '<li><strong>Un ordenador con Windows o Mac</strong> y conexión a internet.</li>'
-      '<li><strong>Unos veinte minutos</strong> la primera vez. Después ninguno: todo esto '
-      'se instala una sola vez.</li>'
+      '<li><strong>Cómo dejarlo todo listo</strong> — pasos 1 a 4, una sola vez.</li>'
+      '<li><strong>Cómo pedir un documento</strong> y cómo darle indicaciones — paso 5.</li>'
+      '<li><strong>Qué comprobar antes de enviarlo</strong> — paso 6.</li>'
+      '<li><strong>Las reglas de la marca</strong> y cómo reconocer un documento mal '
+      'resuelto.</li>'
+      '<li><strong>Qué hacer si algo falla.</strong></li>'
       '</ul>'
-    + '<div style="margin-top:12mm">' + antetitulo("LOS SEIS PASOS") + '</div>'
-    + '<p class="cuerpo"><strong>1.</strong> Instalar Claude. &nbsp;<strong>2.</strong> '
-      'Instalar el sistema de ICO. &nbsp;<strong>3.</strong> Instalar las dos tipografías. '
-      '&nbsp;<strong>4.</strong> Dejar que Claude prepare el resto. &nbsp;<strong>5.</strong> '
-      'Pedirle el documento. &nbsp;<strong>6.</strong> Comprobarlo antes de darlo por bueno.</p>'
-    + '<p class="cuerpo">Los tres primeros se hacen una vez en la vida. Del cuarto en '
-      'adelante es lo que harás cada vez que necesites un documento.</p>', 2)
+    + '<div style="margin-top:12mm">' + antetitulo("ANTES DE EMPEZAR") + '</div>'
+    + '<ul class="checklist">'
+      '<li>Un plan de pago de Claude: <strong>Pro, Max, Team o Enterprise</strong>. El '
+      'gratuito no sirve. Los planes están en ' + enlace(PLANES) + '</li>'
+      '<li>Un ordenador con <strong>Windows o Mac</strong> y conexión a internet.</li>'
+      '<li><strong>Veinte minutos</strong> la primera vez.</li>'
+      '</ul>', 2)
 
 p3 = pagina(
     paso(1, "Instalar Claude en tu ordenador",
-         "Es una aplicación normal, como cualquier otra. Se descarga, se instala y se abre.",
+         "Se descarga, se instala y se abre. Cinco minutos.",
          [sub("Descarga el instalador que corresponda a tu ordenador.<br>"
               "<strong>Mac:</strong> " + enlace(MAC, "claude.ai/api/desktop/darwin/…") +
               "<br><strong>Windows:</strong> " + enlace(WIN, "claude.ai/api/desktop/win32/…")),
@@ -367,7 +368,7 @@ p5 = pagina(
 
 p6 = pagina(
     paso(4, "Dejar que Claude prepare el resto",
-         "Faltan un par de herramientas internas, pero no las instalas tú: se las pides a él.",
+         "Faltan un par de herramientas de fondo. Se piden y se instalan solas.",
          [sub("Abre Claude en la pestaña <strong>Code</strong> y escríbele esto tal cual:",
               decir("Vamos a hacer documentos del Instituto de Comunicación con la skill "
                     "ico-pdf. Comprueba si tengo instalado todo lo que necesita y, si falta "
@@ -382,8 +383,8 @@ p6 = pagina(
 
 p7 = pagina(
     paso(5, "Pedirle el documento",
-         "A partir de aquí solo se escribe en castellano. Cuanto más concreto seas, menos "
-         "vueltas dará.",
+         "Cuanto más concreto seas, menos vueltas dará. Estos son los dos casos que te "
+         "vas a encontrar.",
          [sub("<strong>Si estás rediseñando algo que ya existe</strong>, guarda el archivo "
               "del cliente en la carpeta que elegiste y dile:",
               decir("En la carpeta tienes «guia-productividad.pdf», que me ha pasado el "
@@ -401,8 +402,8 @@ p7 = pagina(
 
 p8 = pagina(
     paso(6, "Comprobarlo antes de darlo por bueno",
-         "El sistema trae dos comprobaciones automáticas. Claude las pasa solo, pero el "
-         "resultado tienes que exigirlo: si no te lo enseña, no está comprobado.",
+         "El sistema trae dos comprobaciones automáticas. El resultado hay que exigirlo: "
+         "si no lo ves, no está comprobado.",
          [sub("Antes de aceptar nada, pídele esto:",
               decir("Pásale las dos puertas de calidad y enséñame los números. Y ábreme "
                     "las páginas para verlas.")),
@@ -424,8 +425,8 @@ reglas_html = "".join(
 p9 = pagina(
     antetitulo("LO INNEGOCIABLE")
     + '<h2 class="seccion">Cuatro <i>reglas</i></h2>'
-    + '<p class="cuerpo">Claude las aplica solo, pero conviene que las conozcas: son las que '
-      'se notan cuando fallan, y las que hacen que un documento vuelva.</p>'
+    + '<p class="cuerpo">Son las que se notan cuando fallan, y las que hacen que un '
+      'documento vuelva del cliente.</p>'
     + reglas_html, 9)
 
 anti_html = "".join(
@@ -457,8 +458,8 @@ paleta_html = "".join(
 p12 = pagina(
     antetitulo("PARA QUE LO RECONOZCAS")
     + '<h2 class="seccion">Los colores y las <i>letras</i></h2>'
-    + '<p class="cuerpo">No tienes que elegirlos: Claude ya los conoce. Están aquí para que '
-      'sepas identificar cuándo algo se ha salido de la marca.</p>'
+    + '<p class="cuerpo">Están aquí para que reconozcas de un vistazo cuándo algo se ha '
+      'salido de la marca.</p>'
     + '<table class="paleta">%s</table>' % paleta_html
     + '<div style="margin-top:10mm">' + antetitulo("LAS DOS TIPOGRAFÍAS") + '</div>'
     + '<div class="tipo"><div class="rol">Playfair Display · solo en titulares</div>'
@@ -477,14 +478,14 @@ p13 = pagina(
     antetitulo("SI ALGO FALLA")
     + '<h2 class="seccion">Los tropiezos más <i>comunes</i></h2>'
     + problemas_html
-    + '<p class="cuerpo" style="margin-top:10mm">Y si te pasa cualquier otra cosa, '
-      '<strong>cuéntasela a Claude tal cual</strong>, con tus palabras y pegándole el error '
-      'si lo hay. Lo normal es que lo resuelva él.</p>', 13)
+    + '<p class="cuerpo" style="margin-top:10mm">Cualquier otra cosa, <strong>cuéntala tal '
+      'cual</strong> y pega el mensaje de error si lo hay. Casi todo se resuelve en el '
+      'momento.</p>', 13)
 
 p14 = """<div class="page oscura">
   %s
   <div class="cierre">
-    <h2>Ya está. A partir de aquí solo tienes que pedir.</h2>
+    <h2>El sistema está para usarlo, y para cambiarlo cuando haga falta.</h2>
     <h3>Si algo se te queda corto</h3>
     <p>El sistema completo vive en <strong>%s</strong>. Ahí están todas las referencias: la
        marca, las gráficas, las comprobaciones y el detalle técnico, por si alguna vez hace
